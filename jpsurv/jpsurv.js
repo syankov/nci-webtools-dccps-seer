@@ -663,6 +663,14 @@ function build_output_format_column() {
 
 
 function jpsurvRest(action, params) {
+	console.log('jpsurvRest');
+	console.info(params);
+	console.log(params);
+	/*
+	if(params.search("\+")>0){
+		alert("Plus was found");
+	}
+	*/
 
 	var json = (function () {
     var json = null;
@@ -707,6 +715,47 @@ function load_ajax(filename) {
 
 	return json;
 
+}
+
+function getLDLink(jsonfile) {
+	var id = "ldproxy";
+	var url = "tmp/"+jsonfile;
+
+	var ajaxRequest = $.ajax({
+		type : "GET",
+		url : url
+	});
+
+	ajaxRequest.success(function(data) {
+		//catch error and warning in json
+		if (displayError(id, data) == false) {
+			ko.mapping.fromJS(data, ldproxyModel);
+			addLDproxyHyperLinks(data);
+		}
+	});
+
+	ajaxRequest
+			.fail(function(jqXHR, textStatus) {
+				// alert('Fail');
+				console
+						.log("header: "
+								+ jqXHR
+								+ "\n"
+								+ "Status: "
+								+ textStatus
+								+ "\n\nThe server is temporarily unable to service your request due to maintenance downtime or capacity problems. Please try again later.");
+				message = 'Service Unavailable: ' + textStatus + "<br>";
+				message += "The server is temporarily unable to service your request due to maintenance downtime or capacity problems. Please try again later.<br>";
+
+				$('#' + id + '-message').show();
+				$('#' + id + '-message-content').empty().append(message);
+				$('#' + id + '-progress').hide();
+				$('#' + id+ '-results-container').hide();
+				//hide loading icon
+				$('#'+id+"-loading").hide();
+			});
+	ajaxRequest.always(function() {
+	});
 }
 
 function getUrlParameter(sParam) {
