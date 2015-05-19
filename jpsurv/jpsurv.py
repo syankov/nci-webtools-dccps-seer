@@ -7,8 +7,20 @@ import json
 from werkzeug import secure_filename
 import textwrap
 import logging
+import unicodedata
 
 app = Flask(__name__, static_folder='', static_url_path='/')
+
+def fix_jpsurv(jpsurvDataString):
+    #Replace {plus} with +
+    jpsurvDataString = jpsurvDataString.decode("utf-8").replace("{plus}", "+").encode("utf-8")
+    #Replace \"\" with \"null\"
+    #jpsurvDataString = jpsurvDataString.decode("utf-8").replace('\\"\\"', '\\"NULL\\"').encode("utf-8")
+    jpsurvDataString = jpsurvDataString.decode("utf-8").replace('\\"\\"', '\\"NULL\\"').encode("utf-8")
+    print BOLD+"New:::"+ENDC
+    print jpsurvDataString
+
+    return jpsurvDataString
 
 def index():
     return render_template('index.html')
@@ -28,6 +40,28 @@ def jsonp(func):
             return func(*args, **kwargs)
     return decorated_function
 
+@app.route('/jpsurvRest/parse', methods = ['GET'])
+def parse():
+    # python LDpair.py rs2720460 rs11733615 EUR 38
+    mimetype = 'application/json'
+
+    print
+    print 'parse JPSURV'
+    print 
+
+    jpsurvDataString = request.args.get('jpsurvData', False);
+    jpsurvDataString = fix_jpsurv(jpsurvDataString)
+    info(BOLD+"**** jpsurvDataString ****"+ENDC)
+    print type(jpsurvDataString)
+    info(jpsurvDataString)
+    debug(OKGREEN+"The jpsurv STRING::::::"+ENDC);
+    debug(jpsurvDataString)
+    jpsurvData = json.loads(jpsurvDataString)
+    print type(jpsurvData)
+    out_json = json.dumps(jpsurvData)
+
+    return current_app.response_class(out_json, mimetype=mimetype)
+
 @app.route('/jpsurvRest/hello', methods = ['GET'])
 def hello():
     # python LDpair.py rs2720460 rs11733615 EUR 38
@@ -36,7 +70,8 @@ def hello():
     print
     print 'Execute jpsurvRest/hello'
     print 'Gathering Variables from url'
-    print
+    print 'Weird'
+    debug("Is it working?")
     #out_json = json.dumps(["foo", {"bar":["baz", null, 1.0, 2]}])
     #my_json = json.dumps([{"Age groups": ["0-49","50-65s","65+"], "Breast stage": ["Localized","Regional","Distant"],"Test group": ["val1","ValTwo","AnotherValue"]}])
     #data =[{'Age groups': ['0-49','50-65s','65+'], 'Breast stage': ['Localized','Regional','Distant'],'Test group': ['val1','ValTwo','AnotherValue']}]
@@ -64,10 +99,10 @@ def get_upload():
 
     return current_app.response_class(out_json, mimetype=mimetype)
 
-@app.route('/jpsurvRest/loadform', methods = ['GET'])
-def load():
-    jsondata = '{"Age groups": ["0-49","50-65s","65+"],"Breast stage": ["Localized","Regional","Distant"],"Test group": ["val1","ValTwo","AnotherValue"]}'
-    return json.dump(jsondata)
+#@app.route('/jpsurvRest/loadform', methods = ['GET'])
+#def load():
+#    jsondata = '{"Age groups": ["0-49","50-65s","65+"],"Breast stage": ["Localized","Regional","Distant"],"Test group": ["val1","ValTwo","AnotherValue"]}'
+#    return json.dump(jsondata)
 
 @app.route('/jpsurvRest/stage1_upload', methods=['POST'])
 def stage1_upload():
@@ -146,21 +181,33 @@ def stage1_upload():
 
 @app.route('/jpsurvRest/stage2_calculate', methods=['GET'])
 def stage2_calculate():
+
+    print
+    print 'Execute jpsurvRest/stage2_calculate'
+    print 'Yes, yes, yes...'
+    print
+
     debug(OKGREEN+UNDERLINE+BOLD + "****** Stage 2: CALCULATE BUTTON ***** " + ENDC)
 
-    jpsurvDataString = request.args.get('jpsurvData', False);
+    jpsurvDataString = request.args.get('jpsurvData', False)
+    jpsurvDataString = fix_jpsurv(jpsurvDataString)
+    
     info(BOLD+"**** jpsurvDataString ****"+ENDC)
     info(jpsurvDataString)
+    debug(OKBLUE+"The jpsurv STRING::::::"+ENDC)
+    debug(jpsurvDataString)
     jpsurvData = json.loads(jpsurvDataString)
-    info(BOLD+"**** jpsurvData ****"+ENDC)
+    #info(BOLD+"**** jpsurvData ****"+ENDC)
     for key, value in jpsurvData.iteritems():
         info("var: %s = %s" % (key, value))
+        print("var: %s = %s" % (key, value))
     
     #Init the R Source
     rSource = robjects.r('source')
     rSource('./JPSurvWrapper.R')
 
-    info(BOLD+"**** Calling getFittedResults ****"+ENDC)
+
+    info(BOLD+"**** Calling getFittedResultsWrapper ****"+ENDC)
     # Next two lines execute the R Program
     getFittedResultWrapper = robjects.globalenv['getFittedResultWrapper']
     rStrVector = getFittedResultWrapper(UPLOAD_DIR, jpsurvDataString)
@@ -172,6 +219,9 @@ def stage2_calculate():
 
 @app.route('/jpsurvRest/stage3_plot', methods=['GET'])
 def stage3_plot():
+
+    print 'Go'
+
     debug(OKGREEN+UNDERLINE+BOLD + "****** Stage 3: PLOT BUTTON ***** " + ENDC)
     info("Plotting ...")
 
@@ -180,7 +230,9 @@ def stage3_plot():
     #    print "var: %s = %s" % (k, v)
     #name = request.get_json().get('jpsurvData', '')
     #print name
-    jpsurvDataString = request.args.get('jpsurvData', True);
+    jpsurvDataString = request.args.get('jpsurvData', True)
+    jpsurvDataString = fix_jpsurv(jpsurvDataString)
+
     info(BOLD+"**** jpsurvDataString ****"+ENDC)
     info(jpsurvDataString)
     jpsurvData = json.loads(jpsurvDataString)
@@ -206,10 +258,13 @@ def stage4_link():
     #    print "var: %s = %s" % (k, v)
     #name = request.get_json().get('jpsurvData', '')
     #print name
-    jpsurvDataString = request.args.get('jpsurvData', True);
+    jpsurvDataString = request.args.get('jpsurvData', True)
+    jpsurvDataString = fix_jpsurv(jpsurvDataString)
+
     info(BOLD+"**** jpsurvDataString ****"+ENDC)
     info(jpsurvDataString)
     jpsurvData = json.loads(jpsurvDataString)
+
     info(BOLD+"**** jpsurvData ****"+ENDC)
     for key, value in jpsurvData.iteritems():
         info("var: %s = %s" % (key, value))
@@ -301,6 +356,7 @@ if __name__ == '__main__':
         logger.setLevel(logging.DEBUG)
 
     logger.warning('app.debug: %s' % app.debug, extra=d)
+    logger.warning('Log warning works.', extra=d)
     logger.info('Temp Directory: %s', BOLD+UPLOAD_DIR+ENDC, extra=d)
 
     app.run(host='0.0.0.0', port=port_num, debug = app.debug)

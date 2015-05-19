@@ -670,7 +670,25 @@ function jpsurvRest(action, params) {
 	if(params.search("\+")>0){
 		alert("Plus was found");
 	}
+
+jpsurvData={"file":
+{"dictionary":"Breast_RelativeSurvival.dic",
+"data":"Breast_RelativeSurvival.txt",
+"form":"form-639053.json"},
+"calculate":
+{"form":
+{"yearOfDiagnosisRange":[1975,2011],
+"cohortVars":["Age groups"],
+"cohortValues":["\"65{plus}\""], <<<==== THIS SHOULD BE TURNED INTO A PLUS
+"covariateVars":"\"\"",  <<<==== THIS SHOULD BE NULL
+"joinPoints":1},
+"static":
+{"yearOfDiagnosisTitle":"Year of diagnosis 1975{plus}", <<<<==== ANOTHER ONE HERE.
+"years":["1975","1976","1977","1978","1979","1980","1981","1982","1983","1984","1985","1986","1987","1988","1989","1990","1991","1992","1993","1994","1995","1996","1997","1998","1999","2000","2001","2002","2003","2004","2005","2006","2007","2008","2009","2010","2011"],"yearOfDiagnosisVarName":"Year_of_diagnosis_1975","seerFilePrefix":"Breast_RelativeSurvival","allVars":["Age groups","Breast stage","Year_of_diagnosis_1975"]}},"plot":{"form":{},"static":{"imageId":0}},"tokenId":"639053","status":"uploaded"}
+
 	*/
+	//Make sure to code for null.
+	// If \"\" then replace with null
 
 	var json = (function () {
     var json = null;
