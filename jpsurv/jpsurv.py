@@ -16,7 +16,7 @@ def fix_jpsurv(jpsurvDataString):
     jpsurvDataString = jpsurvDataString.decode("utf-8").replace("{plus}", "+").encode("utf-8")
     #Replace \"\" with \"null\"
     #jpsurvDataString = jpsurvDataString.decode("utf-8").replace('\\"\\"', 'null').encode("utf-8")
-    jpsurvDataString = jpsurvDataString.decode("utf-8").replace('\\"\\"', '\\"NULL\\"').encode("utf-8")
+    #jpsurvDataString = jpsurvDataString.decode("utf-8").replace('\\"\\"', '\\"NULL\\"').encode("utf-8")
     print BOLD+"New:::"+ENDC
     print jpsurvDataString
 
@@ -240,7 +240,7 @@ def stage3_plot():
     info(BOLD+OKBLUE+"**** Calling getGraph ****"+ENDC)
     getGraphWrapper = robjects.globalenv['getGraphWrapper']
     getGraphWrapper(UPLOAD_DIR, jpsurvDataString)
-    status = [{"status":"OK"}]
+    status = '{"status":"OK"}'
 
     mimetype = 'application/json'
     out_json = json.dumps(status)

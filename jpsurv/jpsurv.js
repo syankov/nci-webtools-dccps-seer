@@ -247,8 +247,8 @@ function setCalculateData() {
 	jpsurvData.calculate.form.yearOfDiagnosisRange = [parseInt($('#year_of_diagnosis_start').val()), parseInt($('#year_of_diagnosis_end').val())];
 	jpsurvData.calculate.form.joinPoints = parseInt($('#join_point_select').val()),
 
-	console.log("setCalculateData()");
-	console.dir(jpsurvData);
+	//console.log("setCalculateData()");
+	//console.dir(jpsurvData);
 
 	//Append the plot intervals
 	append_plot_intervals(jpsurvData.calculate.form.yearOfDiagnosisRange[1] - jpsurvData.calculate.form.yearOfDiagnosisRange[0]);
@@ -277,7 +277,7 @@ function file_submit(event) {
 	jpsurvData.tokenId = parseInt(Math.random()*1000000);
 	$("#upload-form").attr('action', '/jpsurvRest/stage1_upload?tokenId='+jpsurvData.tokenId);
 
-	console.log("About to tokenId = " + jpsurvData.tokenId);
+	//console.log("About to tokenId = " + jpsurvData.tokenId);
 	getRestServerStatus();
 
 }
@@ -290,6 +290,7 @@ function get_plot() {
 
 	var params = 'jpsurvData='+JSON.stringify(jpsurvData);
 	var plot_json = JSON.parse(jpsurvRest('stage3_plot', params));
+	//console.dir(plot_json);
 	//Check to see if there was a comm error
 	if(plot_json.status == 'error') {
 		return;
@@ -307,11 +308,11 @@ function get_plot() {
 function show_apc_table() {
 
 	var params = 'jpsurvData='+JSON.stringify(jpsurvData);
-	console.log("BEFORE: "+params);
+	//console.log("BEFORE: "+params);
 	params = replaceAll('None', '', params);
 	//params = replaceAll('\+', 'plus', params);
 	params = params.replace(/\+/g, "{plus}");
-	console.log("AFTER: "+params);
+	//console.log("AFTER: "+params);
 
 	var apc_json = JSON.parse(jpsurvRest('stage2_calculate', params));
 	//Check to see if there was a comm error
@@ -324,8 +325,8 @@ function show_apc_table() {
 			.append($('<div>').css('clear', 'both'))
 			.append($('<div>').append(JSON.stringify(apc_json)));
 */
-	console.log('apc_json');
-	console.log(apc_json);
+	//console.log('apc_json');
+	//console.log(apc_json);
 	console.info("TODO: Make this work for only one row");
 	$('#startYear0').empty().append(apc_json['start.year'][0]);
 	$('#startYear1').empty().append(apc_json['start.year'][1]);
@@ -376,7 +377,7 @@ function jpTrim(str, len) {
 }
 
 function load_form() {
-	console.log('load_form()');
+	//console.log('load_form()');
 	//Removing File Reader, because file is on server
 	//
 	//var file_control = document.getElementById('file_control').files[0];
@@ -689,9 +690,9 @@ function build_output_format_column() {
 
 
 function jpsurvRest(action, params) {
-	console.log('jpsurvRest');
-	console.info(params);
-	console.log(params);
+	//console.log('jpsurvRest');
+	//console.info(params);
+	//console.log(params);
 	/*
 	if(params.search("\+")>0){
 		alert("Plus was found");
@@ -743,7 +744,7 @@ jpsurvData={"file":
 				// ERROR
 				if(errorThrown == "INTERNAL SERVER ERROR") {
 					message = 'Internal Server Error: ' + textStatus + "<br>";
-					message += "A variable value such as 'none' may have caused an internal error during calculation.<br>";
+					message += "A variable value such as 'None' may have caused an internal error during calculation.<br>";
 					message_type = 'warning';
 				} else {
 					message = 'Service Unavailable: ' + textStatus + "<br>";
@@ -760,11 +761,11 @@ jpsurvData={"file":
 		});
 		return json;
 	})();
-	console.log("Print json");
-	console.log(json);
+	//console.log("Print json");
+	//console.log(json);
 	if(typeof json === 'object') {
-		console.log("It is already json");
-		console.dir(json);
+		//console.log("It is already json");
+		//console.dir(json);
 	}
 
 	return json;
