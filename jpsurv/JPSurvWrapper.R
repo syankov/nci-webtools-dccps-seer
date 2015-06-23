@@ -1,6 +1,6 @@
 library('rjson')
 library('JPSurv')
-VERBOSE=FALSE
+VERBOSE=TRUE
 
 getDictionary <- function (inputFile, path, tokenId) {
   fqFileName = file.path(path, inputFile)

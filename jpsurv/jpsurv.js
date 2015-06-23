@@ -53,7 +53,6 @@ $(document).ready(function() {
 		//var file_control_output = load_ajax(getUrlParameter('file_control_filename'));
 		//console.log(file_control_output	);
 		//var file_data_output = load_ajax(getUrlParameter('file_data_filename'));
-
 		setUploadData();
 		//console.log(jpsurvData.file.form);
 		var output_file = load_ajax("form-" + jpsurvData.tokenId + ".json");
@@ -81,12 +80,23 @@ $(document).ready(function() {
 			.append($('<div>').append(JSON.stringify(output_file)));
 		*/
 	} else {
-			$("#parameter_submit").on("click", build_output_format_column);
+		$("#parameter_submit").on("click", build_output_format_column);
 	}
+/*
 
+$( "a" ).click(function( event ) {
+event.preventDefault();
+$( "<div>" )
+.append( "default " + event.type + " prevented" )
+.appendTo( "#log" );
+});
+
+*/
 	$("#cohort_select").on("change", change_cohort_select);
 	$("#covariate_select").on("change", change_covariate_select);
-	$("#upload_file_submit").on("click", file_submit);
+	$("#upload_file_submit").click(function(event) { 
+		file_submit(event);
+	});
 	$("#calculate").on("click", setCalculateData);
 	$("#plot").on("click", setPlotData);
 	//$("#calculate").on("click", show_graph_temp);
@@ -117,7 +127,7 @@ function getDownloadOutput(event) {
 }
 
 function showPlot() {
-	alert("hide plot instructions");
+	//alert("hide plot instructions");
 	$('#plot-instructions').hide();
 }
 function checkPlotStatus() {
@@ -207,8 +217,8 @@ function setCalculateData() {
 	// = $('#parameters').serialize();
   //var yearOfDiagnosisVarName="Year_of_diagnosis_1975";  //HARD CODED...Why?
   //Remove + from title
-  var yearOfDiagnosisVarName = jpsurvData.calculate.static.yearOfDiagnosisTitle.replace('+', '');
-  yearOfDiagnosisVarName = yearOfDiagnosisVarName.replace(new RegExp(" ", 'g'), "_");
+	var yearOfDiagnosisVarName = jpsurvData.calculate.static.yearOfDiagnosisTitle.replace('+', '');
+	yearOfDiagnosisVarName = yearOfDiagnosisVarName.replace(new RegExp(" ", 'g'), "_");
 
   //Remove spaces and replace with underscore
 	jpsurvData.calculate.static.yearOfDiagnosisVarName = yearOfDiagnosisVarName;
@@ -220,7 +230,7 @@ function setCalculateData() {
   //dynamic form data
   // cohort
 	jpsurvData.calculate.form.cohortVars = $.map($("#cohort_select option:selected"), function(elem){
-			return $(elem).text();
+		return $(elem).text();
 	});
 
 	jpsurvData.calculate.form.cohortValues = [];
@@ -249,6 +259,7 @@ function setCalculateData() {
 function setPlotData() {
 	//console.log("setPlotData() - after STAGE 3");
 	//console.dir(jpsurvData);
+	$('#jpsurv-message-container').hide();
 
 	jpsurvData.plot.form.intervals = $('#plot_intervals').val();
 	jpsurvData.plot.form.covariateVars = $('#covariate_value_select').val();
@@ -259,12 +270,16 @@ function setPlotData() {
 }
 
 
-function file_submit() {
+function file_submit(event) {
+	event.preventDefault();
+
 	//set tokenId
 	jpsurvData.tokenId = parseInt(Math.random()*1000000);
 	$("#upload-form").attr('action', '/jpsurvRest/stage1_upload?tokenId='+jpsurvData.tokenId);
-    //console.log("About to tokenId = " + jpsurvData.tokenId);
-    $("#upload_file_submit").submit();
+
+	//console.log("About to tokenId = " + jpsurvData.tokenId);
+	getRestServerStatus();
+
 }
 
 function get_plot() {
@@ -275,6 +290,11 @@ function get_plot() {
 
 	var params = 'jpsurvData='+JSON.stringify(jpsurvData);
 	var plot_json = JSON.parse(jpsurvRest('stage3_plot', params));
+	//console.dir(plot_json);
+	//Check to see if there was a comm error
+	if(plot_json.status == 'error') {
+		return;
+	}
 
 	//console.log("plot_json");
 	//console.dir(plot_json);
@@ -288,21 +308,25 @@ function get_plot() {
 function show_apc_table() {
 
 	var params = 'jpsurvData='+JSON.stringify(jpsurvData);
-	console.log("BEFORE: "+params);
+	//console.log("BEFORE: "+params);
 	params = replaceAll('None', '', params);
 	//params = replaceAll('\+', 'plus', params);
 	params = params.replace(/\+/g, "{plus}");
-	console.log("AFTER: "+params);
+	//console.log("AFTER: "+params);
 
 	var apc_json = JSON.parse(jpsurvRest('stage2_calculate', params));
+	//Check to see if there was a comm error
+	if(apc_json.status == 'error') {
+		return false;
+	}
 /*
 		$('#apc_json_output').empty()
 			.append($('<h2>').append('APC json').addClass('pull-left'))
 			.append($('<div>').css('clear', 'both'))
 			.append($('<div>').append(JSON.stringify(apc_json)));
 */
-	console.log('apc_json');
-	console.log(apc_json);
+	//console.log('apc_json');
+	//console.log(apc_json);
 	console.info("TODO: Make this work for only one row");
 	$('#startYear0').empty().append(apc_json['start.year'][0]);
 	$('#startYear1').empty().append(apc_json['start.year'][1]);
@@ -310,6 +334,8 @@ function show_apc_table() {
 	$('#endYear1').empty().append(apc_json['end.year'][1]);
 	$('#estimate0').empty().append(apc_json.estimate[0]);
 	$('#estimate1').empty().append(apc_json.estimate[1]);
+
+	return true;
 
 }
 
@@ -321,12 +347,13 @@ function getApcTable() {
 	$("#apc-container").hide();
 	$("#plot-container").hide();
 	$("#plot-form").hide();
+	$("#jpsurv-message-container").hide();
 
-	show_apc_table();
-
-	$("#spinner").hide();
-	$("#plot-form").show();
-	$("#apc-container").fadeIn();
+	if(show_apc_table() == true) {
+		$("#spinner").hide();
+		$("#plot-form").show();
+		$("#apc-container").fadeIn();
+	}
 }
 
 function append_plot_intervals(max_interval) {
@@ -350,7 +377,7 @@ function jpTrim(str, len) {
 }
 
 function load_form() {
-	console.log('load_form()');
+	//console.log('load_form()');
 	//Removing File Reader, because file is on server
 	//
 	//var file_control = document.getElementById('file_control').files[0];
@@ -663,29 +690,196 @@ function build_output_format_column() {
 
 
 function jpsurvRest(action, params) {
+	//console.log('jpsurvRest');
+	//console.info(params);
+	//console.log(params);
+	/*
+	if(params.search("\+")>0){
+		alert("Plus was found");
+	}
+
+jpsurvData={"file":
+{"dictionary":"Breast_RelativeSurvival.dic",
+"data":"Breast_RelativeSurvival.txt",
+"form":"form-639053.json"},
+"calculate":
+{"form":
+{"yearOfDiagnosisRange":[1975,2011],
+"cohortVars":["Age groups"],
+"cohortValues":["\"65{plus}\""], <<<==== THIS SHOULD BE TURNED INTO A PLUS
+"covariateVars":"\"\"",  <<<==== THIS SHOULD BE NULL
+"joinPoints":1},
+"static":
+{"yearOfDiagnosisTitle":"Year of diagnosis 1975{plus}", <<<<==== ANOTHER ONE HERE.
+"years":["1975","1976","1977","1978","1979","1980","1981","1982","1983","1984","1985","1986","1987","1988","1989","1990","1991","1992","1993","1994","1995","1996","1997","1998","1999","2000","2001","2002","2003","2004","2005","2006","2007","2008","2009","2010","2011"],"yearOfDiagnosisVarName":"Year_of_diagnosis_1975","seerFilePrefix":"Breast_RelativeSurvival","allVars":["Age groups","Breast stage","Year_of_diagnosis_1975"]}},"plot":{"form":{},"static":{"imageId":0}},"tokenId":"639053","status":"uploaded"}
+
+	*/
+	//Make sure to code for null.
+	// If \"\" then replace with null
 
 	var json = (function () {
-    var json = null;
-    //var url = '/jpsurvRest/'+action+'?'+params+'&jpsurvData='+JSON.stringify(jpsurvData);
+		var json = null;
+		//var url = '/jpsurvRest/'+action+'?'+params+'&jpsurvData='+JSON.stringify(jpsurvData);
 
-    var url = '/jpsurvRest/'+action+'?'+encodeURI(params);
-    //console.warn("jpsurvRest url=");
-    //console.log(url);
-    $.ajax({
-	      'async': false,
-	      'global': false,
-	      'url': url,
-	      'dataType': "json",
-	      'success': function (data) {
-	        json = data;
-	      }
-	    });
-	    return json;
-		})();
+		var url = '/jpsurvRest/'+action+'?'+encodeURI(params);
+		//console.warn("jpsurvRest url=");
+		//console.log(url);
 
+		$.ajax({
+			'async': false,
+			'global': false,
+			'url': url,
+			'dataType': "json",
+			'success': function (data) {
+				json = data;
+			},
+			'error' : function(jqXHR, textStatus, errorThrown) {
+				//alert(errorThrown);
+				console.log(errorThrown);
+				var id = 'jpsurv';
+				console.warn("header: " + jqXHR
+					+ "\ntextStatus: " + textStatus
+					+ "\nerrorThrown: " + errorThrown);
+				//alert('Communication problem: ' + textStatus);
+				// ERROR
+				if(errorThrown == "INTERNAL SERVER ERROR") {
+					message = 'Internal Server Error: ' + textStatus + "<br>";
+					message += "A variable value such as 'None' may have caused an internal error during calculation.<br>";
+					message_type = 'warning';
+				} else {
+					message = 'Service Unavailable: ' + textStatus + "<br>";
+					message += "The server is temporarily unable to service your request due to maintenance downtime or capacity problems. Please try again later.<br>";
+					message_type = 'error';
+				}
+				showMessage(id, message, message_type);
+				$('#spinner').hide();
+				$('#spinner-plotting').hide();
+				$('#apc-container').hide();
+
+				json = '{"status":"error"}';
+			}
+		});
 		return json;
+	})();
+	//console.log("Print json");
+	//console.log(json);
+	if(typeof json === 'object') {
+		//console.log("It is already json");
+		//console.dir(json);
+	}
+
+	return json;
+	/*
+	var jqxhr = $.ajax(url)
+	.done(function(data) {
+		json = data;
+		return json;
+	})
+	.fail(function(jqXHR, textStatus) {
+		var id = 'jpsurv';
+		console.warn("header: "
+			+ jqXHR
+			+ "\n"
+			+ "Status: "
+			+ textStatus
+			+ "\n\nThe server is temporarily unable to service your request due to maintenance downtime or capacity problems. Please try again later.");
+		//alert('Communication problem: ' + textStatus);
+		// ERROR
+		message = 'Service Unavailable: ' + textStatus + "<br>";
+		message += "The server is temporarily unable to service your request due to maintenance downtime or capacity problems. Please try again later.<br>";
+
+		showMessage(id, message, 'error');
+		$('#upload-instructions').hide();
+	});
+
+	return jqxhr
+	*/
 }
 
+function showMessage(id, message, message_type) {
+
+/* Example:
+<div class="row">
+	<div class="col-sm-7 col-sm-offset-2" id="jpsurv-message-container">
+	  <div class="panel panel-danger">
+	    <div class="panel-heading">Error</div>
+	    <div class="panel-body" id="jpsurv-message-content"></div>
+	  </div>
+	</div>
+</div>
+*/
+	//
+	//	Display either a warning an error.
+	//
+	//alert("Show Message");
+	var css_class = "";
+	var header = "";
+	var container_id = id+"-message-container";
+
+	if(message_type.toUpperCase() == 'ERROR') {
+		css_class = 'panel-danger';
+		header = 'Error';
+	} else {
+		css_class = 'panel-warning';
+		header = 'Warning';
+	}
+	$("#"+container_id).empty().show();
+	$("#"+container_id).append(
+		$('<div>')
+			.addClass('panel')
+			.addClass(css_class)
+			.append(
+				$('<div>')
+					.addClass('panel-heading')
+					.append(header)
+					)
+			.append(
+				$('<div>')
+					.addClass('panel-body')
+					.append(message)
+					)
+		);
+}
+
+function getRestServerStatus() {
+
+	var url = '/jpsurvRest/status';
+
+// Assign handlers immediately after making the request,
+// and remember the jqXHR object for this request
+	var jqxhr = $.ajax( url )
+	.done(function() {
+		$("#upload-form").submit();
+	})
+	.fail(function(jqXHR, textStatus) {
+		var id = 'jpsurv';
+		console.warn("header: "
+			+ jqXHR
+			+ "\n"
+			+ "Status: "
+			+ textStatus
+			+ "\n\nThe server is temporarily unable to service your request due to maintenance downtime or capacity problems. Please try again later.");
+		//alert('Communication problem: ' + textStatus);
+		// ERROR
+		message = 'Service Unavailable: ' + textStatus + "<br>";
+		message += "The server is temporarily unable to service your request due to maintenance downtime or capacity problems. Please try again later.<br>";
+
+		showMessage(id, message, 'error');
+		$('#upload-instructions').hide();
+	});
+/*
+	.always(function() {
+		//Don't submit if a fail occurs....
+		alert( "complete" );
+	});
+	// Perform other work here ...
+	// Set another completion function for the request above
+	jqxhr.always(function() {
+		alert( "second complete" );
+	});
+*/
+
+}
 function load_ajax(filename) {
 
 	//console.log(filename);
@@ -700,13 +894,14 @@ function load_ajax(filename) {
 	      //'dataType': "json",
 	      'success': function (data) {
 	        json = data;
-	      }
+	      },
+		 'fail'	: function(jqXHR, textStatus) {
+		 	alert('Fail on load_ajax');
+		 }
 	    });
 	    return json;
 	})();
-
 	return json;
-
 }
 
 function getUrlParameter(sParam) {
