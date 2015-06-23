@@ -31,7 +31,7 @@ getSubsetStr <- function (yearOfDiagnosisVarName, yearOfDiagnosisRange, cohortVa
 
 getFactorStr <- function (covariateVars) {
   factorStr=NULL
-  if (length(covariateVars!=0L)) {
+  if (nchar(covariateVars)!=0) {
     covariateVars=paste0("`", getCorrectFormat(covariateVars), "`")
     factorStr=paste("~-1+", paste(gsub("$", ")", gsub("^", "factor(", covariateVars)), collapse="+"), sep='')
   }
