@@ -241,7 +241,7 @@ function setCalculateData() {
 	// covariate
 	jpsurvData.calculate.form.covariateVars = $('#covariate_select').val();
 	if(jpsurvData.calculate.form.covariateVars == "None") {
-		jpsurvData.calculate.form.covariateVars = '""';
+		jpsurvData.calculate.form.covariateVars = "";
 	}
 	// range
 	jpsurvData.calculate.form.yearOfDiagnosisRange = [parseInt($('#year_of_diagnosis_start').val()), parseInt($('#year_of_diagnosis_end').val())];
@@ -431,7 +431,7 @@ function parse_diagnosis_years() {
 	// Then we need to read the label for the previous row, this will be the name used for the title,
 	// it will ALSO be the value in the array needed to find the years
 
-	if (diagnosis_row > 2) {
+	if (diagnosis_row >= 2) {
 		jpsurvData.calculate.static.yearOfDiagnosisTitle = control_data.VarAllInfo.ItemValueInDic[diagnosis_row-1];
 	}
 	jpsurvData.calculate.static.years = control_data.VarFormatSecList[jpsurvData.calculate.static.yearOfDiagnosisTitle].ItemValueInDic;
@@ -471,16 +471,20 @@ function get_cohort_covariance_variable_names() {
 	var values = control_data.VarAllInfo.ItemValueInDic;
 	var regex_base = /^Var\d*Base/;
 	var regex_name = /^Var\d*Name/;
+	var regex_interval = /Interval/;
+	var regex_year = /Year of diagnosis/;
   //Go through Item Value and look for "Year of diagnosis"
   //Push variable names on to a list called cohort_covariance_variable_names.
 	for (var i=0; i<names.length; i++) {
 		//console.log('names['+i+'] = '+names[i]+', values['+i+'] = '+values[i]);
-		if (regex_base.test(names[i]) && values[i] == "Year of diagnosis") break;
+		//if (regex_base.test(names[i]) && values[i] == "Year of diagnosis") break;
+	        if (regex_interval.test(values[i])) break; //stops at a value with "Interval" in it
 		if (!regex_name.test(names[i])) continue;
 		if (values[i] == "Page type") continue; // Skip the Page type
+		if (regex_year.test(values[i])) continue; //skips "Year of diagnosis"
 		cohort_covariance_variable_names.push(values[i]);
 	}
-	cohort_covariance_variable_names.pop();
+	//cohort_covariance_variable_names.pop();
 	//alert (JSON.stringify(cohort_covariance_variable_names));
 	//console.dir(cohort_covariance_variable_names);
 	return cohort_covariance_variable_names;
@@ -976,9 +980,9 @@ $.fn.serializeObject = function()
 };
 
 function replaceAll(find, replace, str) {
-	console.log(typeof(find));
-	console.log(typeof(replace));
-	console.log(typeof(str));
+	//console.log(typeof(find));
+	//console.log(typeof(replace));
+	//console.log(typeof(str));
 
   	return str.replace(new RegExp(find, 'g'), replace);
 }
