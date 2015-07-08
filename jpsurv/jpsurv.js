@@ -245,7 +245,7 @@ function setCalculateData() {
 	}
 	// range
 	jpsurvData.calculate.form.yearOfDiagnosisRange = [parseInt($('#year_of_diagnosis_start').val()), parseInt($('#year_of_diagnosis_end').val())];
-	jpsurvData.calculate.form.joinPoints = parseInt($('#join_point_select').val()),
+	jpsurvData.calculate.form.maxjoinPoints = parseInt($('#max_join_point_select').val()),
 
 	//console.log("setCalculateData()");
 	//console.dir(jpsurvData);

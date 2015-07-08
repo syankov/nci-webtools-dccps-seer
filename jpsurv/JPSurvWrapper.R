@@ -113,7 +113,7 @@ getFittedResultWrapper <- function (filePath, jpsurvDataString) {
   cohortVars=jpsurvData$calculate$form$cohortVars
   cohortValues=jpsurvData$calculate$form$cohortValues
   covariateVars=jpsurvData$calculate$form$covariateVars
-  numJP=jpsurvData$calculate$form$joinPoints
+  numJP=jpsurvData$calculate$form$maxjoinPoints
   fileName = paste('output', jpsurvData$tokenId, sep="-" )
   fileName = paste(fileName, "rds", sep="." )
   outputFileName = fileName
