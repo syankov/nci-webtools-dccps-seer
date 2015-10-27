@@ -60,7 +60,6 @@ h2.stage-header {
 
 .well {
 	padding: 10px;
-	min-height:641px;
 	overflow: auto;
 }
 
@@ -205,4 +204,103 @@ input[type="file"] {
 .col-md-4{
 
   padding-left:0px;
+}
+.fa{
+    color: #337ab7;   
+   /* border-style: solid;
+    border-radius: 114px;
+    border-width: 2px;
+    padding-left: 6px;
+    padding-right: 8px;*/
+}
+.fa:hover{
+  -webkit-transform: translate(1px, 1px);
+  -moz-transform: translate(1px, 1px);
+  -ms-transform: translate(1px, 1px);
+  -o-transform: translate(1px, 1px);
+  transform: translate(1px, 1px);
+  text-shadow: 1px 1px #ddd;
+ cursor: pointer;
+  
+}
+.slide {
+  -webkit-transform: translate(-400px, 0px);
+  -moz-transform: translate(-400px, 0px);
+  -ms-transform: translate(-400px, 0px);
+  -o-transform: translate(-400px, 0px);
+  transform: translate(-400px, 0px);
+  -webkit-animation-duration: 4s; /* Chrome, Safari, Opera */
+  transition: .400s ease-in;
+
+}
+
+#slideout #slideoutTab {
+  position: relative;
+  -webkit-transform: rotate(180deg);
+  -moz-transform: rotate(180deg);
+  -ms-transform: rotate(180deg);
+  -o-transform: rotate(180deg);
+  transform: rotate(180deg);
+  -webkit-transform-origin: 0% 0%;
+  -moz-transform-origin: 0% 0%;
+  -ms-transform-origin: 0% 0%;
+  -o-transform-origin: 0% 0%;
+  transform-origin: 0% 0%;
+  filter: progid:DXImageTransform.Microsoft.BasicImage(rotation=1);
+  float:right;
+  display: block;
+  transition: .300s ease-in;
+
+}
+#slideout #slideoutTab a {
+  position: fixed;
+  height: auto;
+  font-weight: bold;
+  -moz-border-radius-topleft: 9px;
+  -webkit-border-top-left-radius: 9px;
+  border-top-left-radius: 9px;
+  -moz-border-radius-topright: 9px;
+  -webkit-border-top-right-radius: 9px;
+  border-top-right-radius: 9px;
+  -webkit-transition-duration: 0.1s;
+  -moz-transition-duration: 0.1s;
+  -o-transition-duration: 0.1s;
+  transition-duration: 0.1s;
+}
+
+.advanced{
+
+  color:#337ab7;
+  text-decoration: underline;
+  font-weight: bold;
+  float:right;
+  padding-left:5px; 
+  padding-top:15px;
+  padding-bottom:15px; 
+  cursor: pointer;
+}
+.left_advanced{
+
+  width:80%;
+}
+.right_advanced{
+
+  width:20%;
+  display:inline;
+  padding-left:2%;
+  float:right;
+}
+.options_wrapper{
+
+  padding-bottom:15%;
+}
+.advanced:hover{
+  -webkit-transform: translate(1px, 1px);
+  -moz-transform: translate(1px, 1px);
+  -ms-transform: translate(1px, 1px);
+  -o-transform: translate(1px, 1px);
+  transform: translate(1px, 1px);
+  text-shadow: 1px 1px #ddd;
+ cursor: pointer;
+  
 }

@@ -27,7 +27,6 @@
   <link rel="stylesheet" href="../common/css/style.css" type="text/css">
   <link rel="stylesheet" href="css/jpsurv.css" type="text/css">
   <link rel="stylesheet" href="css/normalize.min.css">
-  <link rel="stylesheet" href="css/slide_out_panel.css">
   <link rel="stylesheet" href="css/header.css">
   <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.js" type="text/javascript"></script>
   <script src= "http://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/js/bootstrap.min.js" type="text/javascript"></script>
@@ -69,8 +68,8 @@
       
               <!-- Upload FORM - STAGE 1 -->
         <div id="slideoutTab">
-              <i id ="plus_minus" class="fa fa-minus-square fa-2x" onclick="change_icon()" style="margin-left:30%"></i>
-            </div>
+              <i id ="plus_minus" class="fa fa-caret-left fa-2x" onclick="change_icon()" style="margin-left:31%"></i>
+        </div>
         <div class="col-md-4" id="slideoutForm">
 
           <div id="slideout">
@@ -194,7 +193,7 @@
                       </option>
                     </select>
                   </div>
-
+                  <div id="Advanced_toogle" class="advanced" onclick="Show_hide_advanced()">Advanced Options</div>
                   <div class="jpsurv-button pull-right">
                     <input type='button' onclick=
                     "window.location.href='/jpsurv'" value="Reset"
@@ -203,9 +202,59 @@
                     'calculate' value='Calculate' class=
                     "btn btn-primary btn-sm">
                   </div>
-                </form>
-              </div>
 
+                </form>
+              </div><!-- Advanced Options - STAGE 2b -->
+                <div class="box col-md-12" div id="stage2b-advanced" style="opacity: 0;height:0px; overflow-y:hidden">
+                  <h2 class="stage-header" >Advanced Options</h2>
+                  <hr class="stage-separator"></hr>
+                    <div class="form-group jpsurv-label-container">
+                    <div id= "options_warpper" class="options_wrapper">
+                        <div id ="left_advanced" class="left_advanced">
+                          <label for="delete_interval" class="jpsurv-label">Delete Last Interval:</label>
+                        </div> 
+                        <div id ="right_advanced" class="right_advanced" style="width:25%">
+                          <div class="fieldgroup">
+                              <input type="radio" name="yes"value="Yes"><label for= "yes">Yes</label>
+                              <input type="radio" name="no"value="No"><label for= "no">No</label>
+
+                          </div>
+                        </div>
+                    </div>  
+                      <div id= "options_warpper" class="options_wrapper">
+                        <div id ="left_advanced" class="left_advanced">
+                          <label for="join_point_between_lebel" class="jpsurv-label">Number of Skipped Observations Between Jointpoints Exclusive:</label>
+                        </div> 
+                        <div id ="right_advanced" class="right_advanced">
+                          <select id='join_point_between_select' class="jpsurv-label-content-advanced" name='join_point_between_select'></select>
+                        </div>
+                    </div>
+                    <div id= "options_warpper" class="options_wrapper">
+                        <div id ="left_advanced" class="left_advanced">
+                          <label for="join_point_first_lebel" class="jpsurv-label">Number of Skipped Observations From First to Jointpoints Exclusive:</label>
+                        </div> 
+                        <div id ="right_advanced" class="right_advanced">
+                          <select id='join_point_first_select' class="jpsurv-label-content-advanced" name='join_point_first_select'></select>
+                        </div>
+                    </div>   
+                  </div>
+                  <div id= "options_warpper" class="options_wrapper">
+                        <div id ="left_advanced" class="left_advanced">
+                          <label for="join_point_last_lebel" class="jpsurv-label">Number of Skipped Observations From Jointpoints to Last Exclusive:</label>
+                        </div> 
+                        <div id ="right_advanced" class="right_advanced">
+                          <select id='join_point_last_select' class="jpsurv-label-content-advanced" name='join_point_last_select'></select>
+                        </div>
+                  </div>
+                  <div id= "options_warpper" class="options_wrapper">
+                        <div id ="left_advanced" class="left_advanced">
+                          <label for="calendar_year" class="jpsurv-label">Number of Calender Year of Project:</label>
+                        </div> 
+                        <div id ="right_advanced" class="right_advanced">
+                          <select id='calendar_year_select' class="jpsurv-label-content-advanced" name='calendar_year_select'></select>
+                        </div>
+                  </div>
+                </div>
               <div style="clear:both;"></div>
               <!-- Plot FORM - STAGE 3 -->
 
@@ -266,11 +315,11 @@
             <li class="active"><a href="#home" data-toggle=
             "tab">Graph/Data</a></li>
 
-	    <li><a href="#estimates-tab" data-toggle="tab">Model Estimates</a></li>
-	    
-	    <li><a href="#selection-tab" data-toggle="tab">Model Selection</a></li>
+      <li><a href="#estimates-tab" data-toggle="tab">Model Estimates</a></li>
+      
+      <li><a href="#selection-tab" data-toggle="tab">Model Selection</a></li>
 
-	    <li><a href="#trends-tab" data-toggle="tab">Trends</a></li>
+      <li><a href="#trends-tab" data-toggle="tab">Trends</a></li>
 
             <li><a href="#help-tab" data-toggle="tab">Help</a></li>
           </ul>

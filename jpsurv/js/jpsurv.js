@@ -986,6 +986,8 @@ function replaceAll(find, replace, str) {
 
   	return str.replace(new RegExp(find, 'g'), replace);
 }
+ 
+//SLIDE OUT FUNCTIONS####################################################
  (function() {
   var slideToggle;
 
@@ -1004,10 +1006,10 @@ function replaceAll(find, replace, str) {
 function change_icon()
  {
 
- 	if($("#plus_minus").hasClass("fa fa-minus-square fa-2x"))
+ 	if($("#plus_minus").hasClass("fa fa-caret-left fa-2x"))
   	{
-    	 $('#plus_minus').removeClass("fa fa-minus-square fa-2x");
-    	 $('#plus_minus').addClass("fa fa-plus-square fa-2x");
+    	 $('#plus_minus').removeClass("fa fa-caret-left fa-2x");
+    	 $('#plus_minus').addClass("fa fa-caret-right fa-2x");
     	 $("#slideoutForm").fadeOut(500);
     	 
 
@@ -1024,20 +1026,14 @@ function change_icon()
     		width: '100%'
 			}, 300);
 		}, 600);
-
- 
-
-
-
     }
-
-    else if($("#plus_minus").hasClass("fa fa-plus-square fa-2x"))
+    else if($("#plus_minus").hasClass("fa fa-caret-right fa-2x"))
   	{
-    	 $('#plus_minus').removeClass("fa fa-plus-square fa-2x");
-    	 $('#plus_minus').addClass("fa fa-minus-square fa-2x");
+    	 $('#plus_minus').removeClass("fa fa-caret-right fa-2x");
+    	 $('#plus_minus').addClass("fa fa-caret-left fa-2x");
     	 $("#slideoutForm").fadeIn(500);
     	 $("#plus_minus").animate({
-    		marginLeft: '30%'
+    		marginLeft: '31%'
 		}, 0);
 
     	 $("#right_panel").animate({
@@ -1049,3 +1045,37 @@ function change_icon()
     }
     
  }
+ //####################################################
+
+ //Poopualtes drop down menus 1-100
+$(function(){
+    var $select = $(".jpsurv-label-content-advanced");
+    for (i=1;i<=100;i++){
+        $select.append($('<option></option>').val(i).html(i))
+    }
+});
+
+//Listener even to hide/show advanced options
+function Show_hide_advanced(){
+
+var height=$("#slideout").height();
+var new_height=height*.50+"px"
+
+ 	if($("#stage2b-advanced").css('display') != 'none')
+  	{
+    	 $("#stage2b-advanced").animate({
+    		height: "0px",
+    		opacity: 0,
+			}, 300);
+    }
+    if($("#stage2b-advanced").css('opacity') == '0')
+  	{
+    	  $("#stage2b-advanced").animate({
+    		height: new_height,
+    		opacity: 1,
+			}, 300);
+
+    }
+
+
+}
