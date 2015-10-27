@@ -256,59 +256,33 @@
                   </div>
                 </div>
               <div style="clear:both;"></div>
-              <!-- Plot FORM - STAGE 3 -->
-
-              <div id='plot-form' class="box col-md-12" style=
-              'display:none'>
-                <form class="form-horizontal" role="form">
-                  <h2 class="stage-header">Plot Parameters</h2>
-                  <hr class="stage-separator">
-
-                  <div class="form-group jpsurv-label-container">
-                    <label for="plot_intervals" class=
-                    "jpsurv-label">Intervals (years):</label>
-                    <select id="plot_intervals" class=
-                    "jpsurv-label-content" name="plot_intervals"
-                    multiple>
-                      <option>
-                        1
-                      </option>
-                    </select>
-                  </div>
-
-                  <fieldset id="covariate-fieldset" class=
-                  "jpsurv-fieldset">
-                    <legend class="jpsurv-legend">Covariate
-                    Values:</legend>
-
-                    <div id='covariate_sub_select' class=
-                    "co-value-container">
-                      Name: <input type="text"><br>
-                      Email: <input type="text"><br>
-                      Date of birth: <input type="text">
-                    </div>
-                  </fieldset>
-
-                  <div style="clear:both;"></div><!--
-          <P style="clear:both; padding-top:10px;">Covariate Variables:<BR>
-          <SELECT id='covariate_select_plot' name='covariate_select_plot'></SELECT></P>
-  -->
-
-                  <div class="jpsurv-button pull-right">
-                    <input type="button" id='plot' class=
-                    "btn btn-primary btn-sm" value="Plot" title=
-                    "Generate a plot" disabled>
-                  </div><!--
-                  <button id='plot' class="btn btn-primary btn-sm" title=
-                  "Generate a plot."
-                  disabled>Plot</button>
-  -->
-              </div>
-
             </div>
           </div><!-- Main Menu Tabs -->
        </div>
         <div class="col-md-8"id="right_panel" >
+
+            <div id="cohort-join-points" class="box">
+              <div class="col-md-8">
+              <b>Cohort</b>
+              <select disabled>
+              <option id="header-cohort-name" >no value selected</option>
+              </select>
+              <select disabled>
+              <option id="header-cohort-value" >no value selected</option>
+              </select>
+              </div>
+              <div class="col-md-4">
+              <div class="pull-right">
+              <b>Number of Join Points</b>
+              <select id="header-join-points">
+              <option>1</option>
+              <option>2</option>
+              <option>3</option>
+              <option>4</option>
+              </select>
+              </div>
+              </div>
+            </div>
 
 
           <ul id="jpsurv-tabs" class="nav nav-tabs responsive">
@@ -326,6 +300,33 @@
 
           <div class="tab-content">
             <div class="tab-pane active" id="home">
+
+              <div id="plot-form">
+                  <div class="col-md-3">
+                    <label for="plot_intervals" class=
+                    "jpsurv-label">Intervals (years):</label>
+                    <select id="plot_intervals" class=
+                    "jpsurv-label-content" name="plot_intervals"
+                    multiple>
+                      <option>
+                        1
+                      </option>
+                    </select>
+                  </div>
+
+                  <div id='covariate_sub_select' class="col-md-3">
+                      Name: <input type="text"><br>
+                      Email: <input type="text"><br>
+                      Date of birth: <input type="text">
+                  </div>
+
+                  <div class="col-md-6">
+                    <input type="button" id='plot' class=
+                    "btn btn-primary btn-sm pull-right" style="margin-top: 35px" value="Plot" title=
+                    "Generate a plot" disabled>
+                  </div>
+              </div>
+            
               <div class="jumbotron">
                 <div class="container">
                   <div id="upload-instructions" class=

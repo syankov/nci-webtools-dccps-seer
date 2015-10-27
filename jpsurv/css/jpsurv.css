@@ -304,3 +304,22 @@ input[type="file"] {
  cursor: pointer;
   
 }
+
+
+#plot-form {
+  margin: 10px;
+  padding-top: 10px;
+}
+
+#cohort-join-points {
+  border: 1px solid #DDDDDD;
+  padding: 20px 10px 40px 10px;
+}
+
+#header-cohort-name, #header-cohort-value {
+  margin-left: 7px;
+  color: #777777 ;
+  background-color: #F2F2F2;
+  
+
+}
