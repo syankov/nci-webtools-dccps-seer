@@ -163,12 +163,9 @@
 
                   <div style="clear:both;"></div>
 
-                  <div class="form-group jpsurv-label-container">
-                    <label class="jpsurv-label" for=
-                    "covariate_select">Covariate Variables:</label>
-                    <select id='covariate_select' class=
-                    "jpsurv-label-content" name='covariate_select'>
-                      </select>
+                  <div  id="popover" class="form-group jpsurv-label-container">
+                    <label class="jpsurv-label" for= "covariate_select">Covariate Variables:</label>
+                    <select id='covariate_select' class="jpsurv-label-content" name='covariate_select' name ="selectList"></select>
                   </div>
 
                   <div class="form-group jpsurv-label-container">
@@ -194,14 +191,7 @@
                     </select>
                   </div>
                   <div id="Advanced_toogle" class="advanced" onclick="Show_hide_advanced()">Advanced Options</div>
-                  <div class="jpsurv-button pull-right">
-                    <input type='button' onclick=
-                    "window.location.href='/jpsurv'" value="Reset"
-                    class="btn btn-warning btn-sm" title=
-                    "Reset all values"> <input type='button' id=
-                    'calculate' value='Calculate' class=
-                    "btn btn-primary btn-sm">
-                  </div>
+                  
 
                 </form>
               </div><!-- Advanced Options - STAGE 2b -->
@@ -255,10 +245,19 @@
                         </div>
                   </div>
                 </div>
+                <div class="jpsurv-button pull-right">
+                    <input type='button' onclick=
+                    "window.location.href='/jpsurv'" value="Reset"
+                    class="btn btn-warning btn-sm" title=
+                    "Reset all values"> <input type='button' id=
+                    'calculate' value='Calculate' class=
+                    "btn btn-primary btn-sm">
+                  </div>
               <div style="clear:both;"></div>
             </div>
           </div><!-- Main Menu Tabs -->
        </div>
+
         <div class="col-md-8"id="right_panel" >
 
             <div id="cohort-join-points" class="box">

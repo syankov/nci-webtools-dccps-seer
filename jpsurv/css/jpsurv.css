@@ -323,3 +323,15 @@ input[type="file"] {
   
 
 }
+
+.col-md-4{
+
+z-index:0;
+overflow: visible;
+}
+.well{
+
+z-index:0;
+overflow: visible;
+min-height:0px;
+}
