@@ -1166,3 +1166,24 @@ function onChange() {
 	    }).popover('show');
 	}
 }
+
+$(function() {
+$("#max_join_point_select").on("change",onChange); 
+});
+
+function onChange() {
+    var $this = $(this);
+    var $e = $(this.target);
+    var joints=parseInt($("#max_join_point_select option:selected").text());
+    if (joints<=2)
+	{
+		$('#max_join_point_select').popover('destroy');
+	}
+    else if(joints>=3){
+	    $("#max_join_point_select").popover({
+	        trigger: 'manual',
+	        placement: 'left',
+	        content: $this.children('option:selected').attr("data-info") //this
+	    }).popover('show');
+	}
+}
