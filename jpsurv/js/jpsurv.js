@@ -100,6 +100,8 @@ $( "<div>" )
 		//$('#upload-instructions').remove();
 		file_submit(event);
 	});
+	
+	
 	$("#calculate").on("click", setCalculateData);
 	$("#plot").on("click", setPlotData);
 	//$("#calculate").on("click", show_graph_temp);
@@ -1076,7 +1078,7 @@ function change_icon()
   	{
     	 $('#plus_minus').removeClass("fa fa-caret-left fa-2x");
     	 $('#plus_minus').addClass("fa fa-caret-right fa-2x");
-    	 $("#slideoutForm").fadeOut(500);
+    	 $("#slideoutForm").fadeOut(300);
     	 
 
     	 $("#plus_minus").animate({
@@ -1168,10 +1170,9 @@ function onChange() {
 }
 
 $(function() {
-$("#max_join_point_select").on("change",onChange); 
+$("#max_join_point_select").on("change",onChange_joints); 
 });
-
-function onChange() {
+function onChange_joints() {
     var $this = $(this);
     var $e = $(this.target);
     var joints=parseInt($("#max_join_point_select option:selected").text());
@@ -1187,3 +1188,10 @@ function onChange() {
 	    }).popover('show');
 	}
 }
+
+$('html').on('click', function(e) {
+  if (typeof $(e.target).data('original-title') == 'undefined' &&
+     !$(e.target).parents().is('.popover.in')) {
+    $('[data-original-title]').popover('hide');
+  }
+});
