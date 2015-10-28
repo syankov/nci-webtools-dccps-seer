@@ -1168,10 +1168,9 @@ function onChange() {
 }
 
 $(function() {
-$("#max_join_point_select").on("change",onChange); 
+$("#max_join_point_select").on("change",onChange_joints); 
 });
-
-function onChange() {
+function onChange_joints() {
     var $this = $(this);
     var $e = $(this.target);
     var joints=parseInt($("#max_join_point_select option:selected").text());
