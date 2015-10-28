@@ -53,7 +53,6 @@ $(document).ready(function() {
 					);
 
 		$('#upload_file_submit_container').remove();
-		//var file_control_output = load_ajax(getUrlParameter('file_control_filename'));
 		//console.log(file_control_output	);
 		//var file_data_output = load_ajax(getUrlParameter('file_data_filename'));
 		setUploadData();
@@ -547,8 +546,8 @@ function set_covariate_select(covariate_options) {
 	$("#covariate_select_plot").empty();
 
 	for (i=0;i<covariate_options.length;i++) {
-		$("#covariate_select").append("<OPTION>"+covariate_options[i]+"</OPTION>");
-		$("#covariate_select_plot").append("<OPTION>"+covariate_options[i]+"</OPTION>");
+		$("#covariate_select").append("<OPTION data-info=\"Selecting a covariate variable in this model assumes that the hazards are proportional to the different levels of this covariate. This might not be realistic.\">"+covariate_options[i]+"</OPTION>");
+		$("#covariate_select_plot").append("<OPTION data-info=\"Selecting a covariate variable in this model assumes that the hazards are proportional to the different levels of this covariate. This might not be realistic.\">"+covariate_options[i]+"</OPTION>");
 	}
 
 }
@@ -1068,20 +1067,7 @@ function change_icon()
 
  
 //SLIDE OUT FUNCTIONS####################################################
- (function() {
-  var slideToggle;
-
-  slideToggle = function() {
-    return $("#slideout").toggleClass("slide");
-
-
-  };
-
-  $(function() {
-    return $("#plus_minus").on('click', slideToggle);
-  });
-
-}).call(this);
+ 
 
 function change_icon()
  {
@@ -1094,12 +1080,12 @@ function change_icon()
     	 
 
     	 $("#plus_minus").animate({
-    		marginLeft: '1%'
-		}, 500);
+    		marginLeft: '1%',
+		}, 300);
 
     	$("#slideout").animate({
-    		transform: 'translate(-400px, 0px)'
-		}, 500);
+    		transform: 'translate(-400px, 0px)',
+		}, 300);
 
     	setTimeout(function(){
     		$("#right_panel").animate({
@@ -1114,7 +1100,7 @@ function change_icon()
     	 $("#slideoutForm").fadeIn(500);
     	 $("#plus_minus").animate({
     		marginLeft: '31%'
-		}, 0);
+		}, 20);
 
     	 $("#right_panel").animate({
     		width: '66.666666%'
@@ -1158,4 +1144,25 @@ var new_height=height*.50+"px"
     }
 
 
+}
+
+$(function() {
+$("#covariate_select").on("change",onChange); 
+});
+
+function onChange() {
+    var $this = $(this);
+    var $e = $(this.target);
+    
+    if ($("#covariate_select option:selected").text()=="None")
+	{
+		$('#covariate_select').popover('destroy');
+	}
+    else if($("#covariate_select option:selected").text()!="None"){
+	    $("#covariate_select").popover({
+	        trigger: 'manual',
+	        placement: 'left',
+	        content: $this.children('option:selected').attr("data-info") //this
+	    }).popover('show');
+	}
 }
