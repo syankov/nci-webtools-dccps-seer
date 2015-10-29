@@ -80,7 +80,7 @@
                 <form id="upload-form" class="form-horizontal" role=
                 "form" method="post" enctype="multipart/form-data"
                 action="/jpsurvRest/stage1_upload">
-                  <h2 class="stage-header">Input Files</h2>
+                  <h2 class="stage-header">Input Data</h2>
                   <hr class="stage-separator">
 
                   <div id="file_control_container" class=
@@ -121,7 +121,7 @@
               "display:none;">
                 <form id='parameters' class="form-horizontal" role=
                 "form">
-                  <h2 class="stage-header">Calculation
+                  <h2 class="stage-header">Model
                   Parameters</h2>
                   <hr class="stage-separator">
 
@@ -169,10 +169,8 @@
                   </div>
 
                   <div class="form-group jpsurv-label-container">
-                    <label for="max_join_point_select" class=
-                    "jpsurv-label">Maximum Number of Join Points:</label> <select id=
-                    'max_join_point_select' class="jpsurv-label-content"
-                    name='max_join_point_select'>
+                    <label for="max_join_point_select" class="jpsurv-label">Maximum Number of Join Points:</label> 
+                      <select id='max_join_point_select' class="jpsurv-label-content" name='max_join_point_select'>
                       <option>1</option>
                       <option>2</option>
                       <option  data-info="Three or more Join points may take more than five minutes to run.">3</option>
@@ -184,7 +182,7 @@
 
                 </form>
               </div><!-- Advanced Options - STAGE 2b -->
-                <div class="box col-md-12" div id="stage2b-advanced" style="opacity: 0;height:0px; overflow-y:hidden">
+                <div class="box col-md-12" div id="stage2b-advanced" style="display:none;height:0px;opacity=0; overflow-y:hidden">
                   <h2 class="stage-header" >Advanced Options</h2>
                   <hr class="stage-separator"></hr>
                     <div class="form-group jpsurv-label-container">
@@ -195,7 +193,7 @@
                         <div id ="right_advanced" class="right_advanced" style="width:25%">
                           <div class="fieldgroup">
                               <input type="radio" name="yes"value="Yes"><label for= "yes">Yes</label>
-                              <input type="radio" name="no"value="No"><label for= "no">No</label>
+                              <input type="radio" name="no"value="No" checked="checked"><label for= "no">No</label>
 
                           </div>
                         </div>
@@ -234,31 +232,45 @@
                         </div>
                   </div>
                 </div>
-                <div class="jpsurv-button pull-right">
-                    <input type='button' onclick=
-                    "window.location.href='/jpsurv'" value="Reset"
-                    class="btn btn-warning btn-sm" title=
-                    "Reset all values"> <input type='button' id=
-                    'calculate' value='Calculate' class=
-                    "btn btn-primary btn-sm">
+                 <div id="email_fields" class="box col-md-12" style="opacity:0;height:0px;display:none">
+                  <h2 class="stage-header">Type in your email address</h2>
+                  <hr class="stage-separator">
+                   <p >Three or more Join points may take longer than usual to be compute. Please type in your email adress to be notifed when computation is complete. </p>
+                  <div class="jpsurv-button pull-left">
+                  <form id="emailForm" action="queue" method="post" style="display: block;">
+                      <fieldset style="border:0px;" >
+                           <label for="emailAddress">Email</label>
+                           <input type="email" id="emailAddress" name="emailAddress" placeholder="Your email here" required="">                    
+                           <span class="help-block"></span>
+                      </fieldset>
                   </div>
+                </div>
+                </form>
+
+                <input type='button' id='calculate' value='Calculate' class="btn btn-primary btn-sm" style="float:right;"><input type='button' onclick="window.location.href='/jpsurv'" value="Reset"class="btn btn-warning btn-sm" title="Reset all values"style="float:right; right;  margin-right:10px">
+
               <div style="clear:both;"></div>
             </div>
           </div><!-- Main Menu Tabs -->
        </div>
 
         <div class="col-md-8"id="right_panel" >
-
             <div id="cohort-join-points" class="box">
-              <div class="col-md-8">
+              <div class="col-md-1">
               <b>Cohort</b>
+              </div>
+              <div class="col-md-7">
+
+              <span id="cohort-values" > 
               <select disabled>
               <option id="header-cohort-name" >no value selected</option>
               </select>
               <select disabled>
               <option id="header-cohort-value" >no value selected</option>
               </select>
+              </span>
               </div>
+
               <div class="col-md-4">
               <div class="pull-right">
               <b>Number of Join Points</b>
@@ -275,7 +287,7 @@
 
           <ul id="jpsurv-tabs" class="nav nav-tabs responsive">
             <li class="active"><a href="#home" data-toggle=
-            "tab">Graph/Data</a></li>
+            "tab">Survival Graph/Data</a></li>
 
       <li><a href="#estimates-tab" data-toggle="tab">Model Estimates</a></li>
 
