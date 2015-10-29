@@ -100,6 +100,8 @@ $( "<div>" )
 		//$('#upload-instructions').remove();
 		file_submit(event);
 	});
+	
+	
 	$("#calculate").on("click", setCalculateData);
 	$("#plot").on("click", setPlotData);
 	//$("#calculate").on("click", show_graph_temp);
@@ -210,52 +212,67 @@ function setUploadData() {
 
 //Set Data after STAGE 2
 function setCalculateData() {
-	//console.log("setCalculateData() - after STAGE 2");
-	//console.dir(jpsurvData);
-	//Hide instructions
-	$('#calculate-instructions').hide();
+	var height=$("#slideout").height();
+	var joints=parseInt($("#max_join_point_select option:selected").text());
+			console.log(joints);
+	if(joints>=3)
+	{
+		 if($("#email_fields").css('opacity') == '0')
+  		{
+    	  document.getElementById('calculate').value="Submit";
+    	  document.getElementById('email_fields').style.display="block";
+    	  $("#email_fields").animate({
+    		opacity: 1,
+    		height:"150px"
+			}, 300);
 
-	//Set static data
-	var inputAnswers;
-	// = $('#parameters').serialize();
-  //var yearOfDiagnosisVarName="Year_of_diagnosis_1975";  //HARD CODED...Why?
-  //Remove + from title
-	var yearOfDiagnosisVarName = jpsurvData.calculate.static.yearOfDiagnosisTitle.replace('+', '');
-	yearOfDiagnosisVarName = yearOfDiagnosisVarName.replace(new RegExp(" ", 'g'), "_");
-
-  //Remove spaces and replace with underscore
-	jpsurvData.calculate.static.yearOfDiagnosisVarName = yearOfDiagnosisVarName;
-	jpsurvData.calculate.static.seerFilePrefix = jpsurvData.file.dictionary.substring(0, jpsurvData.file.dictionary.indexOf("."));
-
-	jpsurvData.calculate.static.allVars = get_cohort_covariance_variable_names();
-	jpsurvData.calculate.static.allVars.push(yearOfDiagnosisVarName);
-
-  //dynamic form data
-  // cohort
-	jpsurvData.calculate.form.cohortVars = $.map($("#cohort_select option:selected"), function(elem){
-		return $(elem).text();
-	});
-
-	jpsurvData.calculate.form.cohortValues = [];
-
-	$.each(jpsurvData.calculate.form.cohortVars, function( index, value ) {
-		jpsurvData.calculate.form.cohortValues.push('"'+$('#cohort_value_'+index+'_select').val()+'"');
-	});
-	// covariate
-	jpsurvData.calculate.form.covariateVars = $('#covariate_select').val();
-	if(jpsurvData.calculate.form.covariateVars == "None") {
-		jpsurvData.calculate.form.covariateVars = "";
+    	}
 	}
-	// range
-	jpsurvData.calculate.form.yearOfDiagnosisRange = [parseInt($('#year_of_diagnosis_start').val()), parseInt($('#year_of_diagnosis_end').val())];
-	jpsurvData.calculate.form.maxjoinPoints = parseInt($('#max_join_point_select').val()),
+	else{
+		$('#calculate-instructions').hide();
 
-	//console.log("setCalculateData()");
-	//console.dir(jpsurvData);
+		//Set static data
+		var inputAnswers;
+		// = $('#parameters').serialize();
+	  //var yearOfDiagnosisVarName="Year_of_diagnosis_1975";  //HARD CODED...Why?
+	  //Remove + from title
+		var yearOfDiagnosisVarName = jpsurvData.calculate.static.yearOfDiagnosisTitle.replace('+', '');
+		yearOfDiagnosisVarName = yearOfDiagnosisVarName.replace(new RegExp(" ", 'g'), "_");
 
-	//Append the plot intervals
-	append_plot_intervals(jpsurvData.calculate.form.yearOfDiagnosisRange[1] - jpsurvData.calculate.form.yearOfDiagnosisRange[0]);
-	getApcTable();
+	  //Remove spaces and replace with underscore
+		jpsurvData.calculate.static.yearOfDiagnosisVarName = yearOfDiagnosisVarName;
+		jpsurvData.calculate.static.seerFilePrefix = jpsurvData.file.dictionary.substring(0, jpsurvData.file.dictionary.indexOf("."));
+
+		jpsurvData.calculate.static.allVars = get_cohort_covariance_variable_names();
+		jpsurvData.calculate.static.allVars.push(yearOfDiagnosisVarName);
+
+	  //dynamic form data
+	  // cohort
+		jpsurvData.calculate.form.cohortVars = $.map($("#cohort_select option:selected"), function(elem){
+			return $(elem).text();
+		});
+
+		jpsurvData.calculate.form.cohortValues = [];
+
+		$.each(jpsurvData.calculate.form.cohortVars, function( index, value ) {
+			jpsurvData.calculate.form.cohortValues.push('"'+$('#cohort_value_'+index+'_select').val()+'"');
+		});
+		// covariate
+		jpsurvData.calculate.form.covariateVars = $('#covariate_select').val();
+		if(jpsurvData.calculate.form.covariateVars == "None") {
+			jpsurvData.calculate.form.covariateVars = "";
+		}
+		// range
+		jpsurvData.calculate.form.yearOfDiagnosisRange = [parseInt($('#year_of_diagnosis_start').val()), parseInt($('#year_of_diagnosis_end').val())];
+		jpsurvData.calculate.form.maxjoinPoints = parseInt($('#max_join_point_select').val()),
+
+		//console.log("setCalculateData()");
+		//console.dir(jpsurvData);
+
+		//Append the plot intervals
+		append_plot_intervals(jpsurvData.calculate.form.yearOfDiagnosisRange[1] - jpsurvData.calculate.form.yearOfDiagnosisRange[0]);
+		getApcTable();
+	}
 
 }
 
@@ -1076,7 +1093,7 @@ function change_icon()
   	{
     	 $('#plus_minus').removeClass("fa fa-caret-left fa-2x");
     	 $('#plus_minus').addClass("fa fa-caret-right fa-2x");
-    	 $("#slideoutForm").fadeOut(500);
+    	 $("#slideoutForm").fadeOut(300);
     	 
 
     	 $("#plus_minus").animate({
@@ -1116,7 +1133,7 @@ function change_icon()
  //Popualtes drop down menus 1-100
 $(function(){
     var $select = $(".jpsurv-label-content-advanced");
-    for (i=1;i<=100;i++){
+    for (i=1;i<=10;i++){
         $select.append($('<option></option>').val(i).html(i))
     }
 });
@@ -1131,14 +1148,19 @@ var new_height=height*.50+"px"
   	{
     	 $("#stage2b-advanced").animate({
     		height: "0px",
-    		opacity: 0,
+    		opacity:0
 			}, 300);
+    	 setTimeout(function(){
+    		document.getElementById("stage2b-advanced").style.display="none";
+		}, 299);
+
     }
-    if($("#stage2b-advanced").css('opacity') == '0')
+    else if($("#stage2b-advanced").css('display') == 'none')
   	{
+    	  document.getElementById("stage2b-advanced").style.display="block";
     	  $("#stage2b-advanced").animate({
-    		height: new_height,
-    		opacity: 1,
+    		height: "300px",
+    		opacity:1
 			}, 300);
 
     }
@@ -1185,4 +1207,67 @@ function onChange_joints() {
 	        content: $this.children('option:selected').attr("data-info") //this
 	    }).popover('show');
 	}
+   update_join_point_limit(joints);	
+}
+
+$('html').on('click', function(e) {
+  if (typeof $(e.target).data('original-title') == 'undefined' &&
+     !$(e.target).parents().is('.popover.in')) {
+    $('[data-original-title]').popover('hide');
+  }
+});
+
+
+
+$(function() {
+$("#cohort_select").on("change", parse_cohort);
+});
+
+function parse_cohort() {
+	var variables = $("#cohort_select").val();
+	var values = [];	
+
+	for (var i = 0; i < variables.length; i ++) {
+		var cohort_val = $("#cohort_value_" + i + "_select");
+		cohort_val.on("change", parse_cohort);
+		values.push(cohort_val.val());
+	}
+
+	
+	// update header
+	var selectors = "<table>";
+
+	for (var i = 0; i < variables.length; i ++) {
+		selectors += "<tr>";
+		var val_id = 'cohort_value_' + i;
+		selectors += "<td style='text-align: left'>";		
+		selectors += "<select disabled class='grey'><option>" + variables[i] + "</option></select>&nbsp;";
+		selectors += "</td>";		
+
+		selectors += "<td>";		
+		selectors += "<select disabled class='grey' id=" + val_id + "><option>" + values[i] + "</option></select><br>";
+		selectors += "</td>";		
+		selectors += "</tr>";
+
+	}
+
+	$("#cohort-join-points").css("height", ((variables.length + 1) * 25) + "px");
+
+
+	selectors += "</table>";
+
+	$('#cohort-values').html(selectors);
+}
+
+
+function update_join_point_limit(limit) {
+	console.log('called update' + limit);
+
+	var options = "";
+	for (var i = 1; i <= limit; i ++) {
+		console.log(i);		
+		options += "<option>" + i + "</option>";
+	}
+
+	$("#header-join-points").html(options);
 }
