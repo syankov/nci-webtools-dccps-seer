@@ -1019,32 +1019,41 @@ $(function(){
     }
 });
 
-
 $(function() {
-$("#covariate_select").change(function() {
-	    if ($("#covariate_select option:selected").text()=="None")
-	{
-		$('#covariate_select').popover('destroy');
-	}
-    else if($("#covariate_select option:selected").text()!="None"){
-    	Makepopup('covariate_select',"Warning",'left');
-    }
+$("#covariate_select").on("change",onChange_covariate); 
 });
 
 $(function() {
-$("#max_join_point_select").change(function() {
-var joints=parseInt($("#max_join_point_select option:selected").text());
+$("#max_join_point_select").on("change",onChange_joints); 
+});
+
+
+function onChange_covariate() {
+	var $this = $(this);
+	if ($("#covariate_select option:selected").text()=="None")
+	{
+		$('#covariate_select').popover('destroy');
+	}
+    else if($("#covariate_select option:selected").text()!="None")
+	{
+    	Makepopup('covariate_select',"Warning",'left',$this);
+    }
+}
+
+function onChange_joints() {
+	var $this = $(this);
+	var joints=parseInt($("#max_join_point_select option:selected").text());
     if (joints<=2)
         {
             $('#max_join_point_select').popover('destroy');
         }
     else if(joints>=3){
-    	Makepopup('max_join_point_select',"Warning",'left');
+    	Makepopup('max_join_point_select',"Warning",'left',$this);
 
     }
     update_join_point_limit(joints);
 
-});
+}
 
 $(function() {
 $("#cohort_select").on("change", parse_cohort);
@@ -1097,7 +1106,7 @@ function update_join_point_limit(limit) {
 
 	$("#header-join-points").html(options);
 }
-//######################################################################################################################GENERIC FUNCTIONS#########################################################################################################################################
+//#######################################################################################################################################GENERIC FUNCTIONS#########################################################################################################################################
 
 //SLIDE OUT FUNCTIONS####################################################
  
@@ -1182,8 +1191,7 @@ function Slide_menu_Vert(Id){
     }
 }
 
-function Makepopup(id,title,loc) {
-    var $this = $(this);
+function Makepopup(id,title,loc,$this) {
     var $e = $(this.target);
 	    $("#"+id).popover({
 	        trigger: 'manual',
