@@ -212,66 +212,55 @@ function setUploadData() {
 
 //Set Data after STAGE 2
 function setCalculateData() {
-	var height=$("#slideout").height();
 	var joints=parseInt($("#max_join_point_select option:selected").text());
-			console.log(joints);
 	if(joints>=3)
 	{
-		 if($("#email_fields").css('opacity') == '0')
-  		{
-    	  document.getElementById('calculate').value="Submit";
-    	  document.getElementById('email_fields').style.display="block";
-    	  $("#email_fields").animate({
-    		opacity: 1,
-    		height:"150px"
-			}, 300);
-
-    	}
+		Slide_menu_Vert('email_fields')
 	}
 	else{
 		$('#calculate-instructions').hide();
 
 		//Set static data
-			var inputAnswers;
-			// = $('#parameters').serialize();
-		  //var yearOfDiagnosisVarName="Year_of_diagnosis_1975";  //HARD CODED...Why?
-		  //Remove + from title
-			var yearOfDiagnosisVarName = jpsurvData.calculate.static.yearOfDiagnosisTitle.replace('+', '');
-			yearOfDiagnosisVarName = yearOfDiagnosisVarName.replace(new RegExp(" ", 'g'), "_");
+		var inputAnswers;
+		// = $('#parameters').serialize();
+	  //var yearOfDiagnosisVarName="Year_of_diagnosis_1975";  //HARD CODED...Why?
+	  //Remove + from title
+		var yearOfDiagnosisVarName = jpsurvData.calculate.static.yearOfDiagnosisTitle.replace('+', '');
+		yearOfDiagnosisVarName = yearOfDiagnosisVarName.replace(new RegExp(" ", 'g'), "_");
 
-		  //Remove spaces and replace with underscore
-			jpsurvData.calculate.static.yearOfDiagnosisVarName = yearOfDiagnosisVarName;
-			jpsurvData.calculate.static.seerFilePrefix = jpsurvData.file.dictionary.substring(0, jpsurvData.file.dictionary.indexOf("."));
+	  //Remove spaces and replace with underscore
+		jpsurvData.calculate.static.yearOfDiagnosisVarName = yearOfDiagnosisVarName;
+		jpsurvData.calculate.static.seerFilePrefix = jpsurvData.file.dictionary.substring(0, jpsurvData.file.dictionary.indexOf("."));
 
-			jpsurvData.calculate.static.allVars = get_cohort_covariance_variable_names();
-			jpsurvData.calculate.static.allVars.push(yearOfDiagnosisVarName);
+		jpsurvData.calculate.static.allVars = get_cohort_covariance_variable_names();
+		jpsurvData.calculate.static.allVars.push(yearOfDiagnosisVarName);
 
-		  //dynamic form data
-		  // cohort
-			jpsurvData.calculate.form.cohortVars = $.map($("#cohort_select option:selected"), function(elem){
-				return $(elem).text();
-			});
+	  //dynamic form data
+	  // cohort
+		jpsurvData.calculate.form.cohortVars = $.map($("#cohort_select option:selected"), function(elem){
+			return $(elem).text();
+		});
 
-			jpsurvData.calculate.form.cohortValues = [];
+		jpsurvData.calculate.form.cohortValues = [];
 
-			$.each(jpsurvData.calculate.form.cohortVars, function( index, value ) {
-				jpsurvData.calculate.form.cohortValues.push('"'+$('#cohort_value_'+index+'_select').val()+'"');
-			});
-			// covariate
-			jpsurvData.calculate.form.covariateVars = $('#covariate_select').val();
-			if(jpsurvData.calculate.form.covariateVars == "None") {
-				jpsurvData.calculate.form.covariateVars = "";
-			}
-			// range
-			jpsurvData.calculate.form.yearOfDiagnosisRange = [parseInt($('#year_of_diagnosis_start').val()), parseInt($('#year_of_diagnosis_end').val())];
-			jpsurvData.calculate.form.maxjoinPoints = parseInt($('#max_join_point_select').val()),
+		$.each(jpsurvData.calculate.form.cohortVars, function( index, value ) {
+			jpsurvData.calculate.form.cohortValues.push('"'+$('#cohort_value_'+index+'_select').val()+'"');
+		});
+		// covariate
+		jpsurvData.calculate.form.covariateVars = $('#covariate_select').val();
+		if(jpsurvData.calculate.form.covariateVars == "None") {
+			jpsurvData.calculate.form.covariateVars = "";
+		}
+		// range
+		jpsurvData.calculate.form.yearOfDiagnosisRange = [parseInt($('#year_of_diagnosis_start').val()), parseInt($('#year_of_diagnosis_end').val())];
+		jpsurvData.calculate.form.maxjoinPoints = parseInt($('#max_join_point_select').val()),
 
-			//console.log("setCalculateData()");
-			//console.dir(jpsurvData);
+		//console.log("setCalculateData()");
+		//console.dir(jpsurvData);
 
-			//Append the plot intervals
-			append_plot_intervals(jpsurvData.calculate.form.yearOfDiagnosisRange[1] - jpsurvData.calculate.form.yearOfDiagnosisRange[0]);
-			getApcTable();
+		//Append the plot intervals
+		append_plot_intervals(jpsurvData.calculate.form.yearOfDiagnosisRange[1] - jpsurvData.calculate.form.yearOfDiagnosisRange[0]);
+		getApcTable();
 	}
 
 }
@@ -1019,117 +1008,9 @@ function replaceAll(find, replace, str) {
 }
  (function() {
   var slideToggle;
-
-  slideToggle = function() {
-    return $("#slideout").toggleClass("slide");
-
-
-  };
-
-  $(function() {
-    return $("#plusminus").on('click', slideToggle);
-  });
-
-}).call(this);
-
-function change_icon()
- {
-
- 	if($("#plusminus").hasClass("fa fa-minus-square fa-2x"))
-  	{
-    	 $('#plusminus').removeClass("fa fa-minus-square fa-2x");
-    	 $('#plusminus').addClass("fa fa-plus-square fa-2x");
-    	 $("#slideoutForm").fadeOut(500);
-    	 
-
-    	 $("#plusminus").animate({
-    		marginLeft: '1%'
-		}, 500);
-
-    	$("#slideout").animate({
-    		transform: 'translate(-400px, 0px)'
-		}, 500);
-
-    	setTimeout(function(){
-    		$("#right_panel").animate({
-    		width: '100%'
-			}, 300);
-		}, 600);
-
  
 
-
-
-    }
-
-    else if($("#plusminus").hasClass("fa fa-plus-square fa-2x"))
-  	{
-    	 $('#plusminus').removeClass("fa fa-plus-square fa-2x");
-    	 $('#plusminus').addClass("fa fa-minus-square fa-2x");
-    	 $("#slideoutForm").fadeIn(500);
-    	 $("#plusminus").animate({
-    		marginLeft: '30%'
-		}, 0);
-
-    	 $("#right_panel").animate({
-    		width: '66.666666%'
-			}, 10);
-
-
-
-    }
-    
- }
-
-
- 
-//SLIDE OUT FUNCTIONS####################################################
- 
-
-function change_icon()
- {
-
- 	if($("#plusminus").hasClass("fa fa-caret-left fa-2x"))
-  	{
-    	 $('#plusminus').removeClass("fa fa-caret-left fa-2x");
-    	 $('#plusminus').addClass("fa fa-caret-right fa-2x");
-    	 $("#slideoutForm").fadeOut(300);
-    	 
-
-    	 $("#plusminus").animate({
-    		marginLeft: '1%',
-		}, 300);
-
-    	$("#slideout").animate({
-    		transform: 'translate(-400px, 0px)',
-		}, 300);
-
-    	setTimeout(function(){
-    		$("#right_panel").animate({
-    		width: '100%'
-			}, 300);
-		}, 600);
-    }
-    else if($("#plusminus").hasClass("fa fa-caret-right fa-2x"))
-  	{
-    	 $('#plusminus').removeClass("fa fa-caret-right fa-2x");
-    	 $('#plusminus').addClass("fa fa-caret-left fa-2x");
-    	 $("#slideoutForm").fadeIn(500);
-    	 $("#plusminus").animate({
-    		marginLeft: '31%'
-		}, 20);
-
-    	 $("#right_panel").animate({
-    		width: '66.666666%'
-			}, 10);
-
-
-
-    }
-    
- }
- //####################################################
-
+//################################################## END OF SLIDING FUNCTIONS
  //Popualtes drop down menus 1-100
 $(function(){
     var $select = $(".jpsurv-label-content-advanced");
@@ -1138,102 +1019,32 @@ $(function(){
     }
 });
 
-//Listener even to hide/show advanced options
-function Show_hide_advanced(){
-
-var height=$("#slideout").height();
-var new_height=height*.50+"px"
-
- 	if($("#stage2b-advanced").css('display') != 'none')
-  	{
-    	 $("#stage2b-advanced").animate({
-    		height: "0px",
-    		opacity:0
-			}, 300);
-    	 setTimeout(function(){
-    		document.getElementById("stage2b-advanced").style.display="none";
-		}, 299);
-
-    }
-    else if($("#stage2b-advanced").css('display') == 'none')
-  	{
-    	  document.getElementById("stage2b-advanced").style.display="block";
-    	  $("#stage2b-advanced").animate({
-    		height: "300px",
-    		opacity:1
-			}, 300);
-
-    }
-
-
-}
 
 $(function() {
-$("#covariate_select").on("change",onChange); 
-});
-//$(function() {
-//$("#covariate_select").on("change",function() {onChange();}); 
-//});
-
-function onChange() {
-    var $this = $(this);
-    var $e = $(this.target);
-    
-    if ($("#covariate_select option:selected").text()=="None")
+$("#covariate_select").change(function() {
+	    if ($("#covariate_select option:selected").text()=="None")
 	{
 		$('#covariate_select').popover('destroy');
 	}
     else if($("#covariate_select option:selected").text()!="None"){
-	    $("#covariate_select").popover({
-	        trigger: 'manual',
-	        placement: 'left',
-	        title: 'Warning',
-	        content: $this.children('option:selected').attr("data-info") //this
-	    }).popover('show');
-	     $('.popover-title').append('<button type="button" class="close">&times;</button>');
-	     $('.close').click(function(e){
-                $(this).parents('.popover').remove();
-            });
-	}
-}
+    	Makepopup('covariate_select',"Warning",'left');
+    }
+});
 
 $(function() {
-$("#max_join_point_select").on("change",onChange_joints); 
-});
-function onChange_joints() {
-    var $this = $(this);
-    var $e = $(this.target);
-    var joints=parseInt($("#max_join_point_select option:selected").text());
+$("#max_join_point_select").change(function() {
+var joints=parseInt($("#max_join_point_select option:selected").text());
     if (joints<=2)
-	{
-		$('#max_join_point_select').popover('destroy');
-	}
+        {
+            $('#max_join_point_select').popover('destroy');
+        }
     else if(joints>=3){
-	    $("#max_join_point_select").popover({
-	        trigger: 'manual',
-	        placement: 'left',
-	        title: 'Warning',
-	        content: $this.children('option:selected').attr("data-info") //this
-	    }).popover('show');
-	     $('.popover-title').append('<button type="button" class="close">&times;</button>');
-	     $('.close').click(function(e){
-                $(this).parents('.popover').remove();
-            });
-	}
-   update_join_point_limit(joints);	
-}
+    	Makepopup('max_join_point_select',"Warning",'left');
 
+    }
+    update_join_point_limit(joints);
 
-
-$('#popover').on('click', function(e) {
-  alert('called function');
-  if (typeof $(e.target).data('original-title') == 'undefined' &&
-     !$(e.target).parents().is('.popover.in')) {
-    $('[data-original-title]').popover('hide');
-  }
 });
-
-
 
 $(function() {
 $("#cohort_select").on("change", parse_cohort);
@@ -1275,16 +1086,114 @@ function parse_cohort() {
 	$('#cohort-values').html(selectors);
 }
 
-
 function update_join_point_limit(limit) {
 	console.log('called update' + limit);
 
 	var options = "";
-	for (var i = 0; i <= limit; i ++) {
+	for (var i = 1; i <= limit; i ++) {
 		console.log(i);		
 		options += "<option>" + i + "</option>";
 	}
 
 	$("#header-join-points").html(options);
 }
+//######################################################################################################################GENERIC FUNCTIONS#########################################################################################################################################
 
+//SLIDE OUT FUNCTIONS####################################################
+ 
+//HORIZONTAL SLIDING************************************
+slideToggle = function() {
+    return $("#slideout").toggleClass("slide");
+
+
+  };
+
+  $(function() {
+    return $("#icon").on('click', slideToggle);
+  });
+
+}).call(this);
+
+
+function Slide_menu_Horz()
+ {
+
+ 	if($("#icon").hasClass("fa fa-caret-left fa-2x"))
+  	{
+    	 $('#icon').removeClass("fa fa-caret-left fa-2x");
+    	 $('#icon').addClass("fa fa-caret-right fa-2x");
+    	 $("#slideoutForm").fadeOut(300);
+    	 
+
+    	 $("#icon").animate({
+    		marginLeft: '1%',
+		}, 300);
+
+    	$("#slideout").animate({
+    		transform: 'translate(-400px, 0px)',
+		}, 300);
+
+    	setTimeout(function(){
+    		$("#right_panel").animate({
+    		width: '100%'
+			}, 300);
+		}, 600);
+    }
+    else if($("#icon").hasClass("fa fa-caret-right fa-2x"))
+  	{
+    	 $('#icon').removeClass("fa fa-caret-right fa-2x");
+    	 $('#icon').addClass("fa fa-caret-left fa-2x");
+    	 $("#slideoutForm").fadeIn(500);
+    	 $("#icon").animate({
+    		marginLeft: '31%'
+		}, 20);
+
+    	 $("#right_panel").animate({
+    		width: '66.666666%'
+			}, 10);
+
+
+
+    }
+    
+ }
+ //****************************************************
+//Vertical Sliding
+function Slide_menu_Vert(Id){
+ 	if($("#"+Id).css('display') != 'none')
+  	{
+    	 $("#"+Id).animate({
+    		height: "0px",
+    		opacity:0
+			}, 300);
+    	 setTimeout(function(){
+    		document.getElementById(Id).style.display="none";
+		}, 299);
+
+    }
+    else if($("#"+Id).css('display') == 'none')
+  	{
+    	  document.getElementById(Id).style.display="block";
+    	  $("#"+Id).animate({
+    		height: "300px",
+    		opacity:1
+			}, 300);
+
+    }
+}
+
+function Makepopup(id,title,loc) {
+    var $this = $(this);
+    var $e = $(this.target);
+	    $("#"+id).popover({
+	        trigger: 'manual',
+	        placement: loc,
+	        title: title,
+	        content: $this.children('option:selected').attr("data-info") //this
+	    }).popover('show');
+	     $('.popover-title').append('<button type="button" class="close">&times;</button>');
+	     $('.close').click(function(e){
+                $(this).parents('.popover').remove();
+            });
+	
+}
