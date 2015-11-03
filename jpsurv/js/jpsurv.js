@@ -232,46 +232,46 @@ function setCalculateData() {
 		$('#calculate-instructions').hide();
 
 		//Set static data
-		var inputAnswers;
-		// = $('#parameters').serialize();
-	  //var yearOfDiagnosisVarName="Year_of_diagnosis_1975";  //HARD CODED...Why?
-	  //Remove + from title
-		var yearOfDiagnosisVarName = jpsurvData.calculate.static.yearOfDiagnosisTitle.replace('+', '');
-		yearOfDiagnosisVarName = yearOfDiagnosisVarName.replace(new RegExp(" ", 'g'), "_");
+			var inputAnswers;
+			// = $('#parameters').serialize();
+		  //var yearOfDiagnosisVarName="Year_of_diagnosis_1975";  //HARD CODED...Why?
+		  //Remove + from title
+			var yearOfDiagnosisVarName = jpsurvData.calculate.static.yearOfDiagnosisTitle.replace('+', '');
+			yearOfDiagnosisVarName = yearOfDiagnosisVarName.replace(new RegExp(" ", 'g'), "_");
 
-	  //Remove spaces and replace with underscore
-		jpsurvData.calculate.static.yearOfDiagnosisVarName = yearOfDiagnosisVarName;
-		jpsurvData.calculate.static.seerFilePrefix = jpsurvData.file.dictionary.substring(0, jpsurvData.file.dictionary.indexOf("."));
+		  //Remove spaces and replace with underscore
+			jpsurvData.calculate.static.yearOfDiagnosisVarName = yearOfDiagnosisVarName;
+			jpsurvData.calculate.static.seerFilePrefix = jpsurvData.file.dictionary.substring(0, jpsurvData.file.dictionary.indexOf("."));
 
-		jpsurvData.calculate.static.allVars = get_cohort_covariance_variable_names();
-		jpsurvData.calculate.static.allVars.push(yearOfDiagnosisVarName);
+			jpsurvData.calculate.static.allVars = get_cohort_covariance_variable_names();
+			jpsurvData.calculate.static.allVars.push(yearOfDiagnosisVarName);
 
-	  //dynamic form data
-	  // cohort
-		jpsurvData.calculate.form.cohortVars = $.map($("#cohort_select option:selected"), function(elem){
-			return $(elem).text();
-		});
+		  //dynamic form data
+		  // cohort
+			jpsurvData.calculate.form.cohortVars = $.map($("#cohort_select option:selected"), function(elem){
+				return $(elem).text();
+			});
 
-		jpsurvData.calculate.form.cohortValues = [];
+			jpsurvData.calculate.form.cohortValues = [];
 
-		$.each(jpsurvData.calculate.form.cohortVars, function( index, value ) {
-			jpsurvData.calculate.form.cohortValues.push('"'+$('#cohort_value_'+index+'_select').val()+'"');
-		});
-		// covariate
-		jpsurvData.calculate.form.covariateVars = $('#covariate_select').val();
-		if(jpsurvData.calculate.form.covariateVars == "None") {
-			jpsurvData.calculate.form.covariateVars = "";
-		}
-		// range
-		jpsurvData.calculate.form.yearOfDiagnosisRange = [parseInt($('#year_of_diagnosis_start').val()), parseInt($('#year_of_diagnosis_end').val())];
-		jpsurvData.calculate.form.maxjoinPoints = parseInt($('#max_join_point_select').val()),
+			$.each(jpsurvData.calculate.form.cohortVars, function( index, value ) {
+				jpsurvData.calculate.form.cohortValues.push('"'+$('#cohort_value_'+index+'_select').val()+'"');
+			});
+			// covariate
+			jpsurvData.calculate.form.covariateVars = $('#covariate_select').val();
+			if(jpsurvData.calculate.form.covariateVars == "None") {
+				jpsurvData.calculate.form.covariateVars = "";
+			}
+			// range
+			jpsurvData.calculate.form.yearOfDiagnosisRange = [parseInt($('#year_of_diagnosis_start').val()), parseInt($('#year_of_diagnosis_end').val())];
+			jpsurvData.calculate.form.maxjoinPoints = parseInt($('#max_join_point_select').val()),
 
-		//console.log("setCalculateData()");
-		//console.dir(jpsurvData);
+			//console.log("setCalculateData()");
+			//console.dir(jpsurvData);
 
-		//Append the plot intervals
-		append_plot_intervals(jpsurvData.calculate.form.yearOfDiagnosisRange[1] - jpsurvData.calculate.form.yearOfDiagnosisRange[0]);
-		getApcTable();
+			//Append the plot intervals
+			append_plot_intervals(jpsurvData.calculate.form.yearOfDiagnosisRange[1] - jpsurvData.calculate.form.yearOfDiagnosisRange[0]);
+			getApcTable();
 	}
 
 }
@@ -1027,7 +1027,7 @@ function replaceAll(find, replace, str) {
   };
 
   $(function() {
-    return $("#plus_minus").on('click', slideToggle);
+    return $("#plusminus").on('click', slideToggle);
   });
 
 }).call(this);
@@ -1035,14 +1035,14 @@ function replaceAll(find, replace, str) {
 function change_icon()
  {
 
- 	if($("#plus_minus").hasClass("fa fa-minus-square fa-2x"))
+ 	if($("#plusminus").hasClass("fa fa-minus-square fa-2x"))
   	{
-    	 $('#plus_minus').removeClass("fa fa-minus-square fa-2x");
-    	 $('#plus_minus').addClass("fa fa-plus-square fa-2x");
+    	 $('#plusminus').removeClass("fa fa-minus-square fa-2x");
+    	 $('#plusminus').addClass("fa fa-plus-square fa-2x");
     	 $("#slideoutForm").fadeOut(500);
     	 
 
-    	 $("#plus_minus").animate({
+    	 $("#plusminus").animate({
     		marginLeft: '1%'
 		}, 500);
 
@@ -1062,12 +1062,12 @@ function change_icon()
 
     }
 
-    else if($("#plus_minus").hasClass("fa fa-plus-square fa-2x"))
+    else if($("#plusminus").hasClass("fa fa-plus-square fa-2x"))
   	{
-    	 $('#plus_minus').removeClass("fa fa-plus-square fa-2x");
-    	 $('#plus_minus').addClass("fa fa-minus-square fa-2x");
+    	 $('#plusminus').removeClass("fa fa-plus-square fa-2x");
+    	 $('#plusminus').addClass("fa fa-minus-square fa-2x");
     	 $("#slideoutForm").fadeIn(500);
-    	 $("#plus_minus").animate({
+    	 $("#plusminus").animate({
     		marginLeft: '30%'
 		}, 0);
 
@@ -1089,14 +1089,14 @@ function change_icon()
 function change_icon()
  {
 
- 	if($("#plus_minus").hasClass("fa fa-caret-left fa-2x"))
+ 	if($("#plusminus").hasClass("fa fa-caret-left fa-2x"))
   	{
-    	 $('#plus_minus').removeClass("fa fa-caret-left fa-2x");
-    	 $('#plus_minus').addClass("fa fa-caret-right fa-2x");
+    	 $('#plusminus').removeClass("fa fa-caret-left fa-2x");
+    	 $('#plusminus').addClass("fa fa-caret-right fa-2x");
     	 $("#slideoutForm").fadeOut(300);
     	 
 
-    	 $("#plus_minus").animate({
+    	 $("#plusminus").animate({
     		marginLeft: '1%',
 		}, 300);
 
@@ -1110,12 +1110,12 @@ function change_icon()
 			}, 300);
 		}, 600);
     }
-    else if($("#plus_minus").hasClass("fa fa-caret-right fa-2x"))
+    else if($("#plusminus").hasClass("fa fa-caret-right fa-2x"))
   	{
-    	 $('#plus_minus').removeClass("fa fa-caret-right fa-2x");
-    	 $('#plus_minus').addClass("fa fa-caret-left fa-2x");
+    	 $('#plusminus').removeClass("fa fa-caret-right fa-2x");
+    	 $('#plusminus').addClass("fa fa-caret-left fa-2x");
     	 $("#slideoutForm").fadeIn(500);
-    	 $("#plus_minus").animate({
+    	 $("#plusminus").animate({
     		marginLeft: '31%'
 		}, 20);
 
@@ -1171,6 +1171,9 @@ var new_height=height*.50+"px"
 $(function() {
 $("#covariate_select").on("change",onChange); 
 });
+//$(function() {
+//$("#covariate_select").on("change",function() {onChange();}); 
+//});
 
 function onChange() {
     var $this = $(this);
@@ -1184,8 +1187,13 @@ function onChange() {
 	    $("#covariate_select").popover({
 	        trigger: 'manual',
 	        placement: 'left',
+	        title: 'Warning',
 	        content: $this.children('option:selected').attr("data-info") //this
 	    }).popover('show');
+	     $('.popover-title').append('<button type="button" class="close">&times;</button>');
+	     $('.close').click(function(e){
+                $(this).parents('.popover').remove();
+            });
 	}
 }
 
@@ -1204,13 +1212,21 @@ function onChange_joints() {
 	    $("#max_join_point_select").popover({
 	        trigger: 'manual',
 	        placement: 'left',
+	        title: 'Warning',
 	        content: $this.children('option:selected').attr("data-info") //this
 	    }).popover('show');
+	     $('.popover-title').append('<button type="button" class="close">&times;</button>');
+	     $('.close').click(function(e){
+                $(this).parents('.popover').remove();
+            });
 	}
    update_join_point_limit(joints);	
 }
 
-$('html').on('click', function(e) {
+
+
+$('#popover').on('click', function(e) {
+  alert('called function');
   if (typeof $(e.target).data('original-title') == 'undefined' &&
      !$(e.target).parents().is('.popover.in')) {
     $('[data-original-title]').popover('hide');
@@ -1271,3 +1287,4 @@ function update_join_point_limit(limit) {
 
 	$("#header-join-points").html(options);
 }
+
