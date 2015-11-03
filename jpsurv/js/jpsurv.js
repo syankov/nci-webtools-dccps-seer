@@ -1280,7 +1280,7 @@ function update_join_point_limit(limit) {
 	console.log('called update' + limit);
 
 	var options = "";
-	for (var i = 1; i <= limit; i ++) {
+	for (var i = 0; i <= limit; i ++) {
 		console.log(i);		
 		options += "<option>" + i + "</option>";
 	}
