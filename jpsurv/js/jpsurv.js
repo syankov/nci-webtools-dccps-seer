@@ -215,7 +215,7 @@ function setCalculateData() {
 	var joints=parseInt($("#max_join_point_select option:selected").text());
 	if(joints>=3)
 	{
-		Slide_menu_Vert('email_fields')
+		Slide_menu_Vert('email_fields','show')
 	}
 	else{
 		$('#calculate-instructions').hide();
@@ -1046,6 +1046,7 @@ function onChange_joints() {
     if (joints<=2)
         {
             $('#max_join_point_select').popover('destroy');
+            Slide_menu_Vert('email_fields','hide');
         }
     else if(joints>=3){
     	Makepopup('max_join_point_select',"Warning",'left',$this);
@@ -1124,10 +1125,10 @@ slideToggle = function() {
 }).call(this);
 
 
-function Slide_menu_Horz()
+function Slide_menu_Horz(action)
  {
 
- 	if($("#icon").hasClass("fa fa-caret-left fa-2x"))
+ 	if($("#icon").hasClass("fa fa-caret-left fa-2x")||action=='hide')
   	{
     	 $('#icon').removeClass("fa fa-caret-left fa-2x");
     	 $('#icon').addClass("fa fa-caret-right fa-2x");
@@ -1148,7 +1149,7 @@ function Slide_menu_Horz()
 			}, 300);
 		}, 600);
     }
-    else if($("#icon").hasClass("fa fa-caret-right fa-2x"))
+    else if($("#icon").hasClass("fa fa-caret-right fa-2x")||action=='show')
   	{
     	 $('#icon').removeClass("fa fa-caret-right fa-2x");
     	 $('#icon').addClass("fa fa-caret-left fa-2x");
@@ -1168,8 +1169,9 @@ function Slide_menu_Horz()
  }
  //****************************************************
 //Vertical Sliding
-function Slide_menu_Vert(Id){
- 	if($("#"+Id).css('display') != 'none')
+//action: both, hide, show
+function Slide_menu_Vert(Id,action){
+ 	if($("#"+Id).css('display') != 'none' &&action=='both'||action=='hide')
   	{
     	 $("#"+Id).animate({
     		height: "0px",
@@ -1180,7 +1182,7 @@ function Slide_menu_Vert(Id){
 		}, 299);
 
     }
-    else if($("#"+Id).css('display') == 'none')
+    else if($("#"+Id).css('display') == 'none' &&action=='both'||action=='show')
   	{
     	  document.getElementById(Id).style.display="block";
     	  $("#"+Id).animate({
@@ -1192,16 +1194,20 @@ function Slide_menu_Vert(Id){
 }
 
 function Makepopup(id,title,loc,$this) {
-    var $e = $(this.target);
-	    $("#"+id).popover({
-	        trigger: 'manual',
-	        placement: loc,
-	        title: title,
-	        content: $this.children('option:selected').attr("data-info") //this
-	    }).popover('show');
-	     $('.popover-title').append('<button type="button" class="close">&times;</button>');
-	     $('.close').click(function(e){
-                $(this).parents('.popover').remove();
-            });
+	    var $e = $(this.target);
+		    $("#"+id).popover({
+		        trigger: 'manual',
+		        placement: loc,
+		        title: title,
+		        content: $this.children('option:selected').attr("data-info") //this
+		    }).popover('show');
+		     $('.popover-title').append('<button type="button" class="close">&times;</button>');
+		     $('.close').click(function(e){
+	                $(this).parents('.popover').remove();
+	            });
 	
+    setTimeout(function(){
+    	$("#"+id).popover('destroy');
+	}, 4000);
+
 }
