@@ -127,23 +127,33 @@ getFullDataDownload <- function(outputData, subsetStr, downloadFile, jpInd) {
   write.csv(downloadOutput, downloadFile)
 }
 
-
-getRelativeSurvivalByYearWrapper <- function (filePath,filename,jpsurvDataString,jpInd) {
-  jpsurvData = fromJSON(jpsurvDataString)
+#Graphs the Survival vs year graph and saves a csv file of the data
+getRelativeSurvivalByYearWrapper <- function (filePath,jpsurvDataString) {
+  
+  jpsurvDataPath= paste(filePath, jpsurvDataString, sep="/" )
+  jpsurvData=fromJSON(jpsurvDataString)
+  
   file=paste(filePath, paste("output-", jpsurvData$tokenId,".rds", sep=""), sep="/")
   outputData=readRDS(file)
-  intervals=c(5,10)
-#  intervals = jpsurvData$plot$form$intervals
+  intervals=c(1,4)
+#  intervals = jpsurvData$plot$form$intervals #<-----new
+  # jpind=jpsurvData$calculate$form$jpInd #<-----new
+  jpInd=0
   covariateValues = c("Localized", "Distant")
 #  covariateValues = jpsurvData$plot$form$covariateVars
 
   #take the nth from FitList
   fit.result=outputData$FitList[jpInd+1]
-#  png(filename = paste(filePath, paste("plot_Year-", jpsurvData$tokenId, "-",jpsurvData$plot$static[[1]], ".png", sep=""), sep="/"))
-#  downloadFile = paste(filePath, paste("data_Year-", jpsurvData$tokenId, "-",jpsurvData$plot$static[[1]], ".csv", sep=""), sep="/")
-#  survData=plot.relsurv.year(outputData,intervals,c(NA, NA, NA),covariateValues)
+  graphFile= png(filename = paste(filePath, paste("plot_Year-", jpsurvData$tokenId, "-",jpsurvData$plot$static[[1]], ".png", sep=""), sep="/"))
+  downloadFile = paste(filePath, paste("data_Year-", jpsurvData$tokenId, "-",jpsurvData$plot$static[[1]], ".csv", sep=""), sep="/") #CSV file to download
+  survData=plot.relsurv.year(outputData$fittedResult,intervals, c(NA, NA, NA), covariateValues)
+  #  write.csv(survData, downloadFile) #<----need to fix this
+  
   dev.off()
-  return(graphData)
+  survDataJSON=paste(toJSON(survData))
+  jsonl =c(survDataJSON,graphFile,downloadFile) #returns 
+  return (jsonl)
+  
   
 }
 #Graphs the Survival vs Time graph and saves a csv file of the data
@@ -213,11 +223,7 @@ return (jsonl)
 
 
 
-getModelSelectionInfo<-function(filepath,jpsurvDataString) {
-  outputData=readRDS(outFile)
-  fitList=outputData$fit.result$FitList
-  
-}
+
 #Gets the coefficients table in the Model Estimates tab
 getcoefficientsWrapper <- function (filePath,jpsurvDataString) {
   jpsurvDataPath= paste(filePath, jpsurvDataString, sep="/" )
