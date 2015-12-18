@@ -76,14 +76,23 @@ getFittedResultWrapper <- function (filePath, jpsurvDataString) {
   outputFileName =paste(filePath, fileName, sep="/" )
   
   return (getFittedResult(filePath, seerFilePrefix, yearOfDiagnosisVarName, yearOfDiagnosisRange, allVars, cohortVars, cohortValues, covariateVars, numJP,adanced_options, outputFileName))
+  getAllData(filePath,jpsurvDataString)
  # getFullDataDownloadWrapper(filePath,jpsurvDataString)
   
 }
 
 
 
-
-
+getAllData<- function(filePath,jpsurvDataString)
+{
+  Model=geALLtModelWrapper(filePath,jpsurvDataString)
+  Coefficients=getcoefficientsWrapper(filePath,jpsurvDataString)
+  IntGraph=getRelativeSurvivalByIntWrapper(filePath,jpsurvDataString)
+  YearGraph=getRelativeSurvivalByYearWrapper(filePath,jpsurvDataString)
+  jsonl =c(Model,Coefficients,IntGraph,YearGraph) #returns 
+  return (jsonl)
+ # getTrendWrapper(filePath,jpsurvDataString,trend_type)
+}
 #Creates the SEER Data and Fitted Result
 getFittedResult <- function (filePath, seerFilePrefix, yearOfDiagnosisVarName, yearOfDiagnosisRange, allVars, cohortVars, cohortValues, covariateVars, numJP, adanced_options,outputFileName) {
 
@@ -119,7 +128,7 @@ getFittedResult <- function (filePath, seerFilePrefix, yearOfDiagnosisVarName, y
   saveRDS(outputData, outputFileName)
   downloadFile=paste("link-", jpsurvData$tokenId,".csv", sep="")
  # getFullDataDownload(outputData, subsetStr, downloadFile, 0) 
-  return (outputData)
+  
 
 }
 getFullDataDownload <- function(outputData, subsetStr, downloadFile, jpInd) {
@@ -130,7 +139,6 @@ getFullDataDownload <- function(outputData, subsetStr, downloadFile, jpInd) {
 #Graphs the Survival vs year graph and saves a csv file of the data
 getRelativeSurvivalByYearWrapper <- function (filePath,jpsurvDataString) {
   
-  jpsurvDataPath= paste(filePath, jpsurvDataString, sep="/" )
   jpsurvData=fromJSON(jpsurvDataString)
   
   file=paste(filePath, paste("output-", jpsurvData$tokenId,".rds", sep=""), sep="/")
@@ -159,8 +167,6 @@ getRelativeSurvivalByYearWrapper <- function (filePath,jpsurvDataString) {
 #Graphs the Survival vs Time graph and saves a csv file of the data
 getRelativeSurvivalByIntWrapper <- function (filePath,jpsurvDataString) {
   
-
-  jpsurvDataPath= paste(filePath, jpsurvDataString, sep="/" )
   jpsurvData=fromJSON(jpsurvDataString)
   jpInd=0
   # jpind=jpsurvData$calculate$form$jpInd #<-----new
@@ -226,7 +232,6 @@ return (jsonl)
 
 #Gets the coefficients table in the Model Estimates tab
 getcoefficientsWrapper <- function (filePath,jpsurvDataString) {
-  jpsurvDataPath= paste(filePath, jpsurvDataString, sep="/" )
   jpsurvData=fromJSON(jpsurvDataString)
   fileName=paste("output-", jpsurvData$tokenId,".rds", sep="")
   jpInd=0
@@ -240,7 +245,6 @@ getcoefficientsWrapper <- function (filePath,jpsurvDataString) {
 
 #gets all the model selection info for all joint points
 geALLtModelWrapper <- function (filePath,jpsurvDataString) {
-  jpsurvDataPath= paste(filePath, jpsurvDataString, sep="/" )
   jpsurvData=fromJSON(jpsurvDataString)
   fileName=paste("output-", jpsurvData$tokenId,".rds", sep="")
   jpInd=0
@@ -264,7 +268,6 @@ geALLtModelWrapper <- function (filePath,jpsurvDataString) {
 
 #gets all the model selection info for all joint points
 getJointtModelWrapper <- function (filePath,jpsurvDataString) {
-  jpsurvDataPath= paste(filePath, jpsurvDataString, sep="/" )
   jpsurvData=fromJSON(jpsurvDataString)
   fileName=paste("output-", jpsurvData$tokenId,".rds", sep="")
   jpInd=0
@@ -285,7 +288,6 @@ getJointtModelWrapper <- function (filePath,jpsurvDataString) {
 
 getTrendWrapper<- function (filePath,jpsurvDataString,trend_type) {
   
-  jpsurvDataPath= paste(filePath, jpsurvDataString, sep="/" )
   jpsurvData=fromJSON(jpsurvDataString)
   fileName=paste("output-", jpsurvData$tokenId,".rds", sep="")
   jpInd=0
