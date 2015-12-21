@@ -87,7 +87,7 @@ getFittedResultWrapper <- function (filePath, jpsurvDataString) {
 getAllData<- function(filePath,jpsurvDataString)
 {
   print("Creating json")
-  Model=geALLtModelWrapper(filePath,jpsurvDataString)
+  Model=getModelWrapper(filePath,jpsurvDataString)
   Coefficients=getcoefficientsWrapper(filePath,jpsurvDataString)
   IntGraph=getRelativeSurvivalByIntWrapper(filePath,jpsurvDataString)
   YearGraph=getRelativeSurvivalByYearWrapper(filePath,jpsurvDataString)
