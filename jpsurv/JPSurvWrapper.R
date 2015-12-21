@@ -1,4 +1,5 @@
 library('rjson')
+library('jsonlite')
 library('JPSurv')
 VERBOSE=TRUE
 
@@ -85,11 +86,14 @@ getFittedResultWrapper <- function (filePath, jpsurvDataString) {
 
 getAllData<- function(filePath,jpsurvDataString)
 {
+  print("Creating json")
   Model=geALLtModelWrapper(filePath,jpsurvDataString)
   Coefficients=getcoefficientsWrapper(filePath,jpsurvDataString)
   IntGraph=getRelativeSurvivalByIntWrapper(filePath,jpsurvDataString)
   YearGraph=getRelativeSurvivalByYearWrapper(filePath,jpsurvDataString)
-  jsonl =c(Model,Coefficients,IntGraph,YearGraph) #returns 
+  getTrendWrapper(filePath,jpsurvDataString)
+  jsonl =c(Model,Coefficients,IntGraph,YearGraph) #returns
+  print (jsonl)
   return (jsonl)
  # getTrendWrapper(filePath,jpsurvDataString,trend_type)
 }
@@ -256,7 +260,7 @@ geALLtModelWrapper <- function (filePath,jpsurvDataString) {
   
   for(i in 1:length(saved)) 
   {
-    aicJson=paste(toJSON(saved[[i]]$aic))
+    "aicJson"=paste(toJSON(saved[[i]]$aic))
     bicJson=paste(toJSON(saved[[i]]$bic))
     llJson=paste(toJSON(saved[[i]]$ll))
     convergedJson=paste(toJSON(saved[[i]]$converged))
@@ -286,8 +290,10 @@ getJointtModelWrapper <- function (filePath,jpsurvDataString) {
 }
 
 
-getTrendWrapper<- function (filePath,jpsurvDataString,trend_type) {
-  
+getTrendWrapper<- function (filePath,jpsurvDataString) {
+  jsonl=c()
+  jpsurvDataString="test.json"
+  filePath="/analysistools-sandbox/public_html/apps/jpsurv"
   jpsurvData=fromJSON(jpsurvDataString)
   fileName=paste("output-", jpsurvData$tokenId,".rds", sep="")
   jpInd=0
@@ -295,13 +301,16 @@ getTrendWrapper<- function (filePath,jpsurvDataString,trend_type) {
   file=paste(filePath, fileName, sep="/" )
   outputData=readRDS(file)
   jpInd=0
-  trend_type="CS_AAPC"
+  trend_types=c("HAZ_APC","CS_AAPC","CS_AAAC")
   # jpind=jpsurvData$calculate$form$jpInd #<-----new
-  # trend_type=CS_AAPC, HAZ_APC#<-----new
-  
-  file=paste(filePath, fileName, sep="/" )
   outputData=readRDS(file)
-  trend=toJSON(aapc(outputData$fittedResult$FitList[[jpInd+1]],type=trend_type))
-  return(trend)
+
+  file=paste(filePath, fileName, sep="/" )
+  trend1=toJSON(aapc(outputData$fittedResult$FitList[[jpInd+1]],type="CS_AAPC"))
+  trend2=toJSON(aapc(outputData$fittedResult$FitList[[jpInd+1]],type="CS_AAAC"))
+  trend3=toJSON(aapc(outputData$fittedResult$FitList[[jpInd+1]],type="HAZ_APC"))
+  jsonl =c(trend1,trend2,trend3)
+
+  return(jsonl)
   
 }
