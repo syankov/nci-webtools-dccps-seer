@@ -163,7 +163,7 @@ getRelativeSurvivalByYearWrapper <- function (filePath,jpsurvDataString) {
   
   dev.off()
   survDataJSON=paste(toJSON(survData))
-  jsonl =c(survDataJSON,graphFile,downloadFile) #returns 
+  jsonl =c("RelSurvYearData"=survDataJSON,"RelSurYearGraph"=graphFile) #returns 
   return (jsonl)
   
   
@@ -189,7 +189,7 @@ getRelativeSurvivalByIntWrapper <- function (filePath,jpsurvDataString) {
   
   dev.off()
   survDataJSON=paste(toJSON(survData))
-  jsonl =c(survDataJSON,graphFile,downloadFile) #returns 
+  jsonl =c("RelSurIntData"=survDataJSON,"RelSurIntGraph"=graphFile) #returns 
   
 return (jsonl)
 }
@@ -244,7 +244,7 @@ getcoefficientsWrapper <- function (filePath,jpsurvDataString) {
   outputData=readRDS(file)
   print (file)
   coefficientsJson=paste(toJSON(outputData$fittedResult$coefficients))
-  return (coefficientsJson)
+  return ("coefficients"=coefficientsJson)
 }
 
 #gets all the model selection info for all joint points
@@ -264,7 +264,7 @@ geALLtModelWrapper <- function (filePath,jpsurvDataString) {
     bicJson=paste(toJSON(saved[[i]]$bic))
     llJson=paste(toJSON(saved[[i]]$ll))
     convergedJson=paste(toJSON(saved[[i]]$converged))
-    jsonl =c(jsonl, aicJson, bicJson, llJson, convergedJson)
+    jsonl =c("aic"=aicJson, "bic"=bicJson, "ll"=llJson, "converged"=convergedJson)
     
   }
   return (jsonl)
@@ -284,7 +284,7 @@ getJointtModelWrapper <- function (filePath,jpsurvDataString) {
   bicJson=paste(toJSON(saved[[jpInd+1]]$bic))
   llJson=paste(toJSON(saved[[jpInd+1]]$ll))
   convergedJson=paste(toJSON(saved[[jpInd+1]]$converged))
-  jsonl =c(aicJson, bicJson, llJson, convergedJson)
+  jsonl =c("aic"=aicJson, "bic"=bicJson, "ll"=llJson, "converged"=convergedJson)
     
   return (jsonl)
 }
@@ -309,7 +309,7 @@ getTrendWrapper<- function (filePath,jpsurvDataString) {
   trend1=toJSON(aapc(outputData$fittedResult$FitList[[jpInd+1]],type="CS_AAPC"))
   trend2=toJSON(aapc(outputData$fittedResult$FitList[[jpInd+1]],type="CS_AAAC"))
   trend3=toJSON(aapc(outputData$fittedResult$FitList[[jpInd+1]],type="HAZ_APC"))
-  jsonl =c(trend1,trend2,trend3)
+  jsonl =c("trend1"=trend1,"trend2"=trend2,"trend3"=trend3)
 
   return(jsonl)
   
