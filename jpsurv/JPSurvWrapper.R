@@ -87,12 +87,12 @@ getFittedResultWrapper <- function (filePath, jpsurvDataString) {
 getAllData<- function(filePath,jpsurvDataString)
 {
   print("Creating json")
-  Model=getModelWrapper(filePath,jpsurvDataString)
+  Model=getJointtModelWrapper(filePath,jpsurvDataString)
   Coefficients=getcoefficientsWrapper(filePath,jpsurvDataString)
   IntGraph=getRelativeSurvivalByIntWrapper(filePath,jpsurvDataString)
   YearGraph=getRelativeSurvivalByYearWrapper(filePath,jpsurvDataString)
-  getTrendWrapper(filePath,jpsurvDataString)
-  jsonl =c(Model,Coefficients,IntGraph,YearGraph) #returns
+  Trends=getTrendWrapper(filePath,jpsurvDataString)
+  jsonl =c(Model,Coefficients,IntGraph,YearGraph,Trends) #returns
   print (jsonl)
   return (jsonl)
  # getTrendWrapper(filePath,jpsurvDataString,trend_type)
