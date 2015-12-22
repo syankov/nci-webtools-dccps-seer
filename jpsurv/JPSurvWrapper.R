@@ -75,24 +75,32 @@ getFittedResultWrapper <- function (filePath, jpsurvDataString) {
 
   outputFileName =paste(filePath, fileName, sep="/" )
   
-  return (getFittedResult(filePath, seerFilePrefix, yearOfDiagnosisVarName, yearOfDiagnosisRange, allVars, cohortVars, cohortValues, covariateVars, numJP,adanced_options, outputFileName))
+  getFittedResult(filePath, seerFilePrefix, yearOfDiagnosisVarName, yearOfDiagnosisRange, allVars, cohortVars, cohortValues, covariateVars, numJP,adanced_options, outputFileName)
   getAllData(filePath,jpsurvDataString)
+  print("return from getAllData")
+  return
  # getFullDataDownloadWrapper(filePath,jpsurvDataString)
   
 }
 
-
-
 getAllData<- function(filePath,jpsurvDataString)
 {
-  Model=geALLtModelWrapper(filePath,jpsurvDataString)
+  print("Creating json")
+  jpsurvData <<- fromJSON(jpsurvDataString)
+
+  Model=getJointtModelWrapper(filePath,jpsurvDataString)
   Coefficients=getcoefficientsWrapper(filePath,jpsurvDataString)
   IntGraph=getRelativeSurvivalByIntWrapper(filePath,jpsurvDataString)
   YearGraph=getRelativeSurvivalByYearWrapper(filePath,jpsurvDataString)
-  jsonl =c(Model,Coefficients,IntGraph,YearGraph) #returns 
+  Trends=getTrendWrapper(filePath,jpsurvDataString)
+  jsonl =c(Model,Coefficients,IntGraph,YearGraph,Trends) #returns
+  print("Creating results file")
+  paste(filePath, paste("results-", jpsurvData$tokenId, "-",".json", sep=""), sep="/")
+  print (jsonl)
   return (jsonl)
  # getTrendWrapper(filePath,jpsurvDataString,trend_type)
 }
+
 #Creates the SEER Data and Fitted Result
 getFittedResult <- function (filePath, seerFilePrefix, yearOfDiagnosisVarName, yearOfDiagnosisRange, allVars, cohortVars, cohortValues, covariateVars, numJP, adanced_options,outputFileName) {
 
