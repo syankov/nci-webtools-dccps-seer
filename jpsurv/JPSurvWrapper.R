@@ -1,7 +1,8 @@
 library('rjson')
 library('JPSurv')
-VERBOSE=TRUE
 
+VERBOSE=TRUE
+ 
 getDictionary <- function (inputFile, path, tokenId) {
   fqFileName = file.path(path, inputFile)
   outputFileName = paste("form-", tokenId, ".json", sep="")
@@ -61,9 +62,12 @@ getFittedResultWrapper <- function (filePath, jpsurvDataString) {
   cohortValues=jpsurvData$calculate$form$cohortValues
   covariateVars=jpsurvData$calculate$form$covariateVars
   numJP=jpsurvData$calculate$form$maxjoinPoints
-  numbetwn=jpsurvData$calculate$form$numbetwn 
-  numfromstart=jpsurvData$calculate$form$numfromstart 
-  numtoend=jpsurvData$calculate$form$numtoend
+  #numbetwn=jpsurvData$calculate$form$numbetwn 
+  #numfromstart=jpsurvData$calculate$form$numfromstart 
+  #numtoend=jpsurvData$calculate$form$numtoend
+  numbetwn=2
+  numfromstart=3
+  numtoend=4
   adanced_options=list(numbetwn,numfromstart,numtoend)
   
   fileName = paste('output', jpsurvData$tokenId, sep="-" )
@@ -82,25 +86,24 @@ getFittedResultWrapper <- function (filePath, jpsurvDataString) {
  # getFullDataDownloadWrapper(filePath,jpsurvDataString)
   
 }
-
 getAllData<- function(filePath,jpsurvDataString)
 {
-  print("Creating json")
+ 
   jpsurvData <<- fromJSON(jpsurvDataString)
-
+  print("Creating json")
   Model=getJointtModelWrapper(filePath,jpsurvDataString)
   Coefficients=getcoefficientsWrapper(filePath,jpsurvDataString)
   IntGraph=getRelativeSurvivalByIntWrapper(filePath,jpsurvDataString)
-  YearGraph=getRelativeSurvivalByYearWrapper(filePath,jpsurvDataString)
+ # YearGraph=getRelativeSurvivalByYearWrapper(filePath,jpsurvDataString)
   Trends=getTrendWrapper(filePath,jpsurvDataString)
-  jsonl =c(Model,Coefficients,IntGraph,YearGraph,Trends) #returns
-  print("Creating results file")
-  paste(filePath, paste("results-", jpsurvData$tokenId, "-",".json", sep=""), sep="/")
+  jsonl =c(IntGraph,Model,Coefficients,Trends) #returns
+  exportJson <- toJSON(jsonl)
   print (jsonl)
+  print("Creating results file")
+  filename=paste('results', jpsurvData$tokenId, sep="-" )
+  write(exportJson, filename)
   return (jsonl)
- # getTrendWrapper(filePath,jpsurvDataString,trend_type)
 }
-
 #Creates the SEER Data and Fitted Result
 getFittedResult <- function (filePath, seerFilePrefix, yearOfDiagnosisVarName, yearOfDiagnosisRange, allVars, cohortVars, cohortValues, covariateVars, numJP, adanced_options,outputFileName) {
 
@@ -167,7 +170,7 @@ getRelativeSurvivalByYearWrapper <- function (filePath,jpsurvDataString) {
   
   dev.off()
   survDataJSON=paste(toJSON(survData))
-  jsonl =c(survDataJSON,graphFile,downloadFile) #returns 
+  jsonl =c("RelSurvYearData"=survDataJSON,"RelSurYearGraph"=graphFile) #returns 
   return (jsonl)
   
   
@@ -193,7 +196,7 @@ getRelativeSurvivalByIntWrapper <- function (filePath,jpsurvDataString) {
   
   dev.off()
   survDataJSON=paste(toJSON(survData))
-  jsonl =c(survDataJSON,graphFile,downloadFile) #returns 
+  jsonl =c("RelSurIntData"=survDataJSON,"RelSurIntGraph"=graphFile) #returns 
   
 return (jsonl)
 }
@@ -246,9 +249,9 @@ getcoefficientsWrapper <- function (filePath,jpsurvDataString) {
   # jpind=jpsurvData$calculate$form$jpInd #<-----new
   file=paste(filePath, fileName, sep="/" )
   outputData=readRDS(file)
-  print (file)
   coefficientsJson=paste(toJSON(outputData$fittedResult$coefficients))
-  return (coefficientsJson)
+  print(coefficientsJson)
+  return ("coefficients"=coefficientsJson)
 }
 
 #gets all the model selection info for all joint points
@@ -264,11 +267,11 @@ geALLtModelWrapper <- function (filePath,jpsurvDataString) {
   
   for(i in 1:length(saved)) 
   {
-    aicJson=paste(toJSON(saved[[i]]$aic))
+    "aicJson"=paste(toJSON(saved[[i]]$aic))
     bicJson=paste(toJSON(saved[[i]]$bic))
     llJson=paste(toJSON(saved[[i]]$ll))
     convergedJson=paste(toJSON(saved[[i]]$converged))
-    jsonl =c(jsonl, aicJson, bicJson, llJson, convergedJson)
+    jsonl =c("aic"=aicJson, "bic"=bicJson, "ll"=llJson, "converged"=convergedJson)
     
   }
   return (jsonl)
@@ -288,14 +291,14 @@ getJointtModelWrapper <- function (filePath,jpsurvDataString) {
   bicJson=paste(toJSON(saved[[jpInd+1]]$bic))
   llJson=paste(toJSON(saved[[jpInd+1]]$ll))
   convergedJson=paste(toJSON(saved[[jpInd+1]]$converged))
-  jsonl =c(aicJson, bicJson, llJson, convergedJson)
+  jsonl =c("aic"=aicJson, "bic"=bicJson, "ll"=llJson, "converged"=convergedJson)
     
   return (jsonl)
 }
 
 
-getTrendWrapper<- function (filePath,jpsurvDataString,trend_type) {
-  
+getTrendWrapper<- function (filePath,jpsurvDataString) {
+  jsonl=c()
   jpsurvData=fromJSON(jpsurvDataString)
   fileName=paste("output-", jpsurvData$tokenId,".rds", sep="")
   jpInd=0
@@ -303,13 +306,16 @@ getTrendWrapper<- function (filePath,jpsurvDataString,trend_type) {
   file=paste(filePath, fileName, sep="/" )
   outputData=readRDS(file)
   jpInd=0
-  trend_type="CS_AAPC"
+  trend_types=c("HAZ_APC","CS_AAPC","CS_AAAC")
   # jpind=jpsurvData$calculate$form$jpInd #<-----new
-  # trend_type=CS_AAPC, HAZ_APC#<-----new
-  
-  file=paste(filePath, fileName, sep="/" )
   outputData=readRDS(file)
-  trend=toJSON(aapc(outputData$fittedResult$FitList[[jpInd+1]],type=trend_type))
-  return(trend)
+
+  file=paste(filePath, fileName, sep="/" )
+  trend1=toJSON(aapc(outputData$fittedResult$FitList[[jpInd+1]],type="CS_AAPC"))
+  trend2=toJSON(aapc(outputData$fittedResult$FitList[[jpInd+1]],type="CS_AAAC"))
+  trend3=toJSON(aapc(outputData$fittedResult$FitList[[jpInd+1]],type="HAZ_APC"))
+  jsonl =c("trend1"=trend1,"trend2"=trend2,"trend3"=trend3)
+
+  return(jsonl)
   
 }
