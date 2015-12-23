@@ -94,15 +94,15 @@ getAllData<- function(filePath,jpsurvDataString)
   Model=getJointtModelWrapper(filePath,jpsurvDataString)
   Coefficients=getcoefficientsWrapper(filePath,jpsurvDataString)
   IntGraph=getRelativeSurvivalByIntWrapper(filePath,jpsurvDataString)
- # YearGraph=getRelativeSurvivalByYearWrapper(filePath,jpsurvDataString)
+  YearGraph=getRelativeSurvivalByYearWrapper(filePath,jpsurvDataString)
   Trends=getTrendWrapper(filePath,jpsurvDataString)
-  jsonl =c(IntGraph,Model,Coefficients,Trends) #returns
+  jsonl =c(IntGraph,YearGraph,Model,Coefficients,Trends) #returns
   exportJson <- toJSON(jsonl)
   print (jsonl)
   print("Creating results file")
   filename = paste(filePath, paste("results-", jpsurvData$tokenId, ".json", sep=""), sep="/") #CSV file to download
   write(exportJson, filename)
-  #return (jsonl)
+ # return (jsonl)
 }
 #Creates the SEER Data and Fitted Result
 getFittedResult <- function (filePath, seerFilePrefix, yearOfDiagnosisVarName, yearOfDiagnosisRange, allVars, cohortVars, cohortValues, covariateVars, numJP, adanced_options,outputFileName) {
@@ -170,7 +170,7 @@ getRelativeSurvivalByYearWrapper <- function (filePath,jpsurvDataString) {
   
   dev.off()
   survDataJSON=paste(toJSON(survData))
-  jsonl =c("RelSurvYearData"=survDataJSON,"RelSurYearGraph"=graphFile) #returns 
+  jsonl =c("RelSurYearGraph"=graphFile) #returns 
   return (jsonl)
   
   
