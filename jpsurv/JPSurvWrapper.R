@@ -102,7 +102,7 @@ getAllData<- function(filePath,jpsurvDataString)
   print("Creating results file")
   filename = paste(filePath, paste("results-", jpsurvData$tokenId, ".json", sep=""), sep="/") #CSV file to download
   write(exportJson, filename)
-  return (jsonl)
+  #return (jsonl)
 }
 #Creates the SEER Data and Fitted Result
 getFittedResult <- function (filePath, seerFilePrefix, yearOfDiagnosisVarName, yearOfDiagnosisRange, allVars, cohortVars, cohortValues, covariateVars, numJP, adanced_options,outputFileName) {
