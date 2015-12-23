@@ -100,7 +100,7 @@ getAllData<- function(filePath,jpsurvDataString)
   exportJson <- toJSON(jsonl)
   print (jsonl)
   print("Creating results file")
-  filename=paste('results', jpsurvData$tokenId, sep="-" )
+  filename = paste(filePath, paste("results-", jpsurvData$tokenId, ".json", sep=""), sep="/") #CSV file to download
   write(exportJson, filename)
   return (jsonl)
 }
@@ -182,14 +182,13 @@ getRelativeSurvivalByIntWrapper <- function (filePath,jpsurvDataString) {
   jpInd=0
   # jpind=jpsurvData$calculate$form$jpInd #<-----new
   
-  fileName=paste("output-", jpsurvData$tokenId,".rds", sep="")
-  file=paste(filePath, fileName, sep="/" )
+  file=paste(filePath, paste("output-", jpsurvData$tokenId,".rds", sep=""), sep="/")
   outputData=readRDS(file)
   yearOfDiagnosisVarName = jpsurvData$calculate$static$yearOfDiagnosisVarName
   yearOfDiagnosis = jpsurvData$calculate$form$yearOfDiagnosisRange[[1]]
   
   downloadFile = paste(filePath, paste("data_Int-", jpsurvData$tokenId, "-",jpsurvData$plot$static[[1]], ".csv", sep=""), sep="/") #CSV file to download
-  graphFile=(filename = paste(filePath, paste("plot_Int-", jpsurvData$tokenId, "-",jpsurvData$plot$static[[1]], ".png", sep=""), sep="/")) #png file for graph
+  graphFile=png(filename = paste(filePath, paste("plot_Int-", jpsurvData$tokenId, "-",jpsurvData$plot$static[[1]], ".png", sep=""), sep="/")) #png file for graph
   
   survData=plot.relsurv.int(outputData$fittedResult$FitList[[jpInd+1]], yearOfDiagnosisVarName, yearOfDiagnosis);
 #  write.csv(survData, downloadFile) #<----need to fix this
