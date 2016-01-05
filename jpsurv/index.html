@@ -212,7 +212,7 @@
             </div>
             <div class="col-md-4">
               <div class="pull-right">
-                <b>Number of Join Points</b>
+                <b>Number of Join Points (help)</b>
                 <select id="header-join-points">
                   <option>1</option>
                   <option>2</option>
@@ -229,200 +229,286 @@
             <li><a href="#selection-tab" data-toggle="tab">Model Selection</a></li>
             <li><a href="#help-tab" data-toggle="tab">Help</a></li>
           </ul>
+          <!-- TABS HERE -->
           <div class="tab-content">
+            <!-- Home Tab -->
             <div class="tab-pane active" id="home">
-              <!--
-              <div id="plot-form">
-                Hello, where is the graph.
-                <div class="col-md-3">
-                  <label for="plot_intervals" class="jpsurv-label">Intervals (years):</label>
-                  <select id="plot_intervals" class="jpsurv-label-content" name="plot_intervals"
-                    multiple>
-                    <option>
-                      1
-                    </option>
-                  </select>
-                </div>
-                <div id='covariate_sub_select' class="col-md-3">
-                  Name: <input type="text"><br>
-                  Email: <input type="text"><br>
-                  Date of birth: <input type="text">
-                </div>
-                <div class="col-md-6">
-                  <input type="button" id='plot' class="btn btn-primary btn-sm pull-right" style="margin-top: 35px" value="Plot" title="Generate a plot" disabled>
+              <!-- Sub Tabs for Home -->
+              <ul class="nav nav-tabs" id="dashboard_tabs">
+                <li class="active"><a href="#graph-year-tab" data-toggle="tab">Survival vs. Year of Diagnosis</a></li>
+                <li><a href="#graph-time-tab" data-toggle="tab">Survival vs. Time Since Diagnosis</a></li>
+              </ul>
+              <!-- Spinner -->
+              <div id="spinner" style="display:none;">
+                <i class="fa fa-spinner fa-spin fa-2x">&nbsp;</i>
+                <span style="font-weight:bold;font-size:150%;margin-top:100px;">Calculating</span>
+              </div>
+              <!-- Message Panel for Error or Warning-->
+              <div class="row">
+                <div class="col-lg-10 col-lg-offset-1" id="jpsurv-message-container" style="display:none">
+                  <div class="panel panel-danger">
+                    <div class="panel-heading">Error</div>
+                    <div class="panel-body" id="jpsurv-message-content"></div>
+                  </div>
                 </div>
               </div>
-              -->
-              <!--
-              <div class="jumbotron">
-              -->
-                <div class="container">
-                <!--
-                <ul class="nav nav-tabs" id="dashboard_tabs">
-                  <li><a href="#graph-year-tab" data-toggle="tab">Survival vs. Year of Diagnosis</li>
-                  <li><a href="graph-time-tab" data-toggle="tab">Survival vs. Time Since Diagnosis</li>
-                </ul>
-                -->
-                  <div id="upload-instructions" class=
-                    "panel panel-default">
-                    <div class="panel-heading">
-                      <b>Upload Input Files</b>
-                    </div>
-                    <div class="panel-body">
-                      <p>Select and upload two SEER files.</p>
-                      <ul>
-                        <li>Select a SEER Data Dictionary File(.dic)</li>
-                        <li>Select a SEER Data File (.txt)</li>
-                        <li>Click <strong>Upload Input Files</strong></li>
-                      </ul>
-                    </div>
-                  </div>
-                  <div id="calculate-instructions" class="panel panel-default" style="display:none;">
-                    <div class="panel-heading">
-                      <strong>Calculation Parameters</strong>
-                    </div>
-                    <div class="panel-body">
-                      <p>Select the <b>Start Year</b> and <b>End
-                        Year</b> for the year of diagnosis range.</p>
-                      <p>Select <strong>Cohort Variables</strong>,<strong>Covariate Variables</strong> and the appropiate values for <strong>Cohort Values</strong> for the SEER Join Point Survivability calculation.</p>
-                      <ul>
-                        <li>Select one of more <b>Cohort Variables</b>
-                        </li>
-                        <li>Select <b>Cohort Values</b></li>
-                        <li>Select <b>Covariate Variable</b> if avalable</li>
-                      </ul>
-                      <p>Select the number of <strong>Join Points</strong> to use between the interval selected. Selecting 3 or more Join Points may take a considerable amount of time. When long calculations are completed an e-mail will be sent containing a link to the results.</p>
-                      <p>Click <b>Calculate</b> to execute the Join Point calculation and view the APC table.
-                      </p>
-                      <p>Click <b>Reset</b> to reset all values and start a new SEER Join Point calculation.
-                      </p>
-                    </div>
-                  </div>
-                  <div id="spinner" style="display:none;">
-                    <i class="fa fa-spinner fa-spin fa-2x">&nbsp;</i>
-                    <span style="font-weight:bold;font-size:150%;margin-top:100px;">Calculating</span>
-                  </div>
-                  <div class="col-md-12">
-                    <!--
+              <div style="clear:both;"></div>
 
-                    <div id="apc-container" style="display:none;">
-                      <div class="row">
-                        <div class="col-md-12">
-                          <h2 style="font-size:20px;text-align:center;">Annual Percentage Change
-                          </h2>
-                        </div>
-                      </div>
-                      <div class="row">
-                        <div class="col-md-12">
-                          <table class="tg" style=
-                            "margin-bottom:30px;" align="center">
-                            <tr>
-                              <th class="tg-e3zv">Start Year</th>
-                              <th class="tg-e3zv">End Year</th>
-                              <th class="tg-e3zv">Estimate</th>
-                              <th class="tg-e3zv">Error</th>
-                            </tr>
-                            <tr>
-                              <td id="startYear0"></td>
-                              <td id="endYear0"></td>
-                              <td id="estimate0"></td>
-                              <td id="error0"></td>
-                            </tr>
-                            <tr>
-                              <td id="startYear1" class="tg-031e"></td>
-                              <td id="endYear1" class="tg-031e"></td>
-                              <td id="estimate1" class="tg-031e"></td>
-                            </tr>
-                          </table>
-                        </div>
-                      </div>
-                      -->
-                      <!-- row -->
-                      <!-- Plot instructions inside apc-container -->
-                      <div id="plot-instructions" class="panel panel-default">
-                        <div class="panel-heading">
-                          <strong>Plot Parameters</strong>
-                        </div>
-                        <div class="panel-body">
-                          <p>Select <b>interval(s)</b> and/or <b>covarient values</b> for plotting.</p>
-                          <ul>
-                            <li>Select one or more intervals to plot</li>
-                            <li>Select <b>Covarient Values</b> for plot</li>
-                            <li>Click <strong>Plot</strong> to view plots</li>
-                          </ul>
-                          <p>Change values and click <b>Plot</b>for new plots</p>
-                          <p>Changing <b>Calculation Parameters</b>will reset plot.
-                          </p>
-                        </div>
+              <!-- Sub Graphs here -->
+              <div class="tab-content">
+                  <div id="graph-year-tab" class="tab-pane fade active in">
+                    <div class="row">
+                      <div class="col-md-offset-2">
+                        <img src="tmp/plot_Int-793978.png">
                       </div>
                     </div>
-                    <!-- apc-container -->
-                    <p id="spinner-plotting" style="padding:200px 100px;display:none;"><i class="fa fa-spinner fa-spin fa-2x">&nbsp;</i>
-                      <span style="font-weight:bold;font-size:150%;margin-left:15px;">Plotting</span></p>
-                    <div id="plot-container" style="display:none;"class="col-md-12">
+                    <div class="table-responsive">  
+                      <table id="graph-year-table" class="table table-striped table-bordered">
+                        <thead>
+                          <tr>
+                            <th>Year of Diagnosis</th>
+                            <th>Relative Survival 1-year Estimate</th>
+                            <th>Relative Survival 1-year Observered</th>
+                            <th>Relative Survival 4-year Estimate</th>
+                            <th>Relative Survival 4-year Observered</th>
+                          </tr>
+                        </thead>
+                        <tbody>
+                          <tr>
+                            <td>&nbsp;</td>
+                            <td>&nbsp;</td>
+                            <td>&nbsp;</td>
+                            <td>&nbsp;</td>
+                            <td>&nbsp;</td>
+                          </tr>
+                          <tr>
+                            <td>&nbsp;</td>
+                            <td>&nbsp;</td>
+                            <td>&nbsp;</td>
+                            <td>&nbsp;</td>
+                            <td>&nbsp;</td>
+                          </tr>
+                          <tr>
+                            <td>&nbsp;</td>
+                            <td>&nbsp;</td>
+                            <td>&nbsp;</td>
+                            <td>&nbsp;</td>
+                            <td>&nbsp;</td>
+                          </tr>
+                          <tr>
+                            <td>&nbsp;</td>
+                            <td>&nbsp;</td>
+                            <td>&nbsp;</td>
+                            <td>&nbsp;</td>
+                            <td>&nbsp;</td>
+                          </tr>
+                          <tr>
+                            <td>&nbsp;</td>
+                            <td>&nbsp;</td>
+                            <td>&nbsp;</td>
+                            <td>&nbsp;</td>
+                            <td>&nbsp;</td>
+                          </tr>
+                          <tr>
+                            <td>&nbsp;</td>
+                            <td>&nbsp;</td>
+                            <td>&nbsp;</td>
+                            <td>&nbsp;</td>
+                            <td>&nbsp;</td>
+                          </tr>
+                        </tbody>
+                      </table>
+                    </div>
+                  </div>
+                  <div id="graph-time-tab" class="tab-pane fade">
                       <div class="row">
-                        <div class="col-md-12">
-                          <h2 style="font-size:20px;text-align:center;">Relative Survival
-                          </h2>
+                        <div class="col-md-offset-2">
+                          <img src="tmp/plot_Year-793978.png">
                         </div>
                       </div>
-                      <div class="row">
-                        <div class="col-md-12">
-                          <img id="plot-image" alt="Uploaded"class="logo" style="width:550px;padding:10px;border:1px solid;">
-                          <div class="row">
-                            <div class="col-md-12">
-                              <div style="margin-top:10px;"> Download <a id="data-set" href="#"target="_blank">Join Point</a> Results
-                              </div>
-                            </div>
-                          </div>
-                        </div>
-                      </div>
-                      <!-- Remove Jumbotron
+                    <div class="table-responsive">  
+                      <table id="graph-time-table" class="table table-striped table-bordered">
+                        <thead>
+                          <tr>
+                            <th>Year of Diagnosis</th>
+                            <th>Interval</th>
+                            <th>Cumulative Relative Survival</th>
+                            <th>Predicted Cumulative Relative Survival</th>
+                          </tr>
+                        </thead>
+                        <tbody>
+                          <tr>
+                            <td>&nbsp;</td>
+                            <td>&nbsp;</td>
+                            <td>&nbsp;</td>
+                            <td>&nbsp;</td>
+                          </tr>
+                          <tr>
+                            <td>&nbsp;</td>
+                            <td>&nbsp;</td>
+                            <td>&nbsp;</td>
+                            <td>&nbsp;</td>
+                          </tr>
+                          <tr>
+                            <td>&nbsp;</td>
+                            <td>&nbsp;</td>
+                            <td>&nbsp;</td>
+                            <td>&nbsp;</td>
+                          </tr>
+                          <tr>
+                            <td>&nbsp;</td>
+                            <td>&nbsp;</td>
+                            <td>&nbsp;</td>
+                            <td>&nbsp;</td>
+                          </tr>
+                          <tr>
+                            <td>&nbsp;</td>
+                            <td>&nbsp;</td>
+                            <td>&nbsp;</td>
+                            <td>&nbsp;</td>
+                          </tr>
+                        </tbody>
+                      </table>
                     </div>
-                      -->
-                    
                   </div>
-                  <!--
-                  <div style="clear:both;"></div>
-                  -->
-                  <div>
-                    <div id="apc_json_output"></div>
-                  </div>
-                  <div>
-                    <div id="file_control_output"></div>
-                  </div>
-                  <div>
-                    <div id="file_data_output"></div>
-                  </div>
-                  <div>
-                    <div id="r_output"></div>
-                  </div>
-                  <div style="clear:both;"></div>
-
-                  <!-- Message Panel for Error or Warning-->
-                  <div class="row">
-                    <div class="col-lg-10 col-lg-offset-1" id="jpsurv-message-container" style="display:none">
-                      <div class="panel panel-danger">
-                        <div class="panel-heading">Error</div>
-                        <div class="panel-body" id="jpsurv-message-content"></div>
-                      </div>
-                    </div>
-                  </div>
-                  <div style="clear:both;"></div>
-
-                </div>
               </div>
             </div>
-            <!-- Model Estimates -->
-            <div id="estimates-tab" class="tab-pane fade">Estimates Go Here</div>
-            <!-- Trends -->
-            <div id="trends-tab" class="tab-pane fade">Trends Go Here</div>
-            <!-- Model Selection -->
+            <!-- Model Estimates Tab -->
+            <div id="estimates-tab" class="tab-pane fade">
+              <h3>Estimates of the JoinPoints</h3>
+              <div class="table-responsive">  
+                <table id="estimates-jp" class="table table-striped table-bordered">
+                  <thead>
+                    <tr>
+                      <th>Estimates</th>
+                      <th>JoinPoint 0</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr>
+                      <td>John</td>
+                      <td>Doe</td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+
+              <h3>Coefficients</h3>
+              <div class="table-responsive">  
+                <table id="estimates-coefficients" class="table table-striped table-bordered">
+                  <thead>
+                    <tr>
+                      <th>Parameter</th>
+                      <th>Estimate</th>
+                      <th>Standard Error</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr>
+                      <td>John</td>
+                      <td>Doe</td>
+                      <td>john@example.com</td>
+                    </tr>
+                    <tr>
+                      <td>Mary</td>
+                      <td>Moe</td>
+                      <td>mary@example.com</td>
+                    </tr>
+                    <tr>
+                      <td>July</td>
+                      <td>Dooley</td>
+                      <td>july@example.com</td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+            </div>
+            <!-- Trends Tab -->
+            <div id="trends-tab" class="tab-pane fade">
+            <h2>Trend Measures</h2>
+            <h3>Survival Average Annual Percentage Change&nbsp;
+              <a href="#" data-toggle="tooltip" title="Survival Average Annual Percentage Change">
+                <span class="cursor-pointer glyphicon glyphicon-info-sign glyphicon-blue" aria-label="Help" onclick="openHelpWindow('help.html')" href="#"></span>
+              </a>
+            </h3>
+            <div class="table-responsive">  
+              <table id="trend-apc" class="table table-striped table-bordered">
+                <thead>
+                  <tr>
+                    <th>Start Year</th>
+                    <th>End Year</th>
+                    <th>Estimate</th>
+                    <th>Standard Error</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td>1975</td>
+                    <td>1978</td>
+                    <td>-0.007316546</td>
+                    <td>-0.0022188736</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+
+            <h3>Survival Average Annual Absolute Change&nbsp;
+              <a href="#" data-toggle="tooltip" title="Survival Average Annual Absolute Change">
+                <span class="cursor-pointer glyphicon glyphicon-info-sign glyphicon-blue" aria-label="Help" onclick="openHelpWindow('help.html')" href="#"></span>
+              </a>
+            </h3>
+            <div class="table-responsive">  
+              <table id="trend-aac" class="table table-striped table-bordered">
+                <thead>
+                  <tr>
+                    <th>Start Year</th>
+                    <th>End Year</th>
+                    <th>Estimate</th>
+                    <th>Standard Error</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td>1975</td>
+                    <td>1978</td>
+                    <td>-0.007316546</td>
+                    <td>-0.0022188736</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+
+            <h3>Hazard of Cancer Death Annual Percentage&nbsp;
+              <a href="#" data-toggle="tooltip" title="Hazard of Cancer Death Annual Percentage">
+                <span class="cursor-pointer glyphicon glyphicon-info-sign glyphicon-blue" aria-label="Help" onclick="openHelpWindow('help.html')" href="#"></span>
+              </a>
+            </h3>
+            <div class="table-responsive">  
+              <table id="trend-dap" class="table table-striped table-bordered">
+                <thead>
+                  <tr>
+                    <th>Start Year</th>
+                    <th>End Year</th>
+                    <th>Estimate</th>
+                    <th>Standard Error</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td>1975</td>
+                    <td>1978</td>
+                    <td>-0.007316546</td>
+                    <td>-0.0022188736</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+
+            </div>
+            <!-- Model Selection Tab -->
             <div id="selection-tab" class="tab-pane fade">Model Selection Go Here</div>
-
-            <!-- Help -->
-            <div id="help-tab" class="tab-pane fade" style="height:600px; overflow-y: scroll;">
-            </div>
+            <!-- Help Tab -->
+            <div id="help-tab" class="tab-pane fade"></div>
           </div>
         </div>
       </div>

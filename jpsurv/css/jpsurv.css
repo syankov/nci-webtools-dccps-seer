@@ -291,9 +291,9 @@ input[type="file"] {
   float:right;
 }
 .options_wrapper{
-
   padding-bottom:15%;
 }
+
 .advanced:hover{
   -webkit-transform: translate(1px, 1px);
   -moz-transform: translate(1px, 1px);
@@ -320,18 +320,24 @@ input[type="file"] {
   margin-left: 7px;
   color: #777777 ;
   background-color: #F2F2F2;
-  
-
 }
 
 .col-md-4{
-
-z-index:0;
-overflow: visible;
+  z-index:0;
+  overflow: visible;
 }
 .well{
-
-z-index:0;
-overflow: visible;
-min-height:0px;
+  z-index:0;
+  overflow: visible;
+  min-height:0px;
+}
+#help-tab {
+  height:600px;
+  overflow-y: scroll;
+}
+.cursor-pointer {
+    cursor: pointer;
+}
+.glyphicon-blue {
+    color: #337ab7;
 }

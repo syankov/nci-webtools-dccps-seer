@@ -16,6 +16,8 @@ $(document).ready(function() {
 
 	//console.log("jpsurvData");
 	//console.dir(jpsurvData);
+	$('[data-toggle="tooltip"]').tooltip();
+
 	loadHelp();
 	$('#plot-form').hide();
 
