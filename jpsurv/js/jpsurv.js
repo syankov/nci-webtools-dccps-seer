@@ -16,7 +16,7 @@ $(document).ready(function() {
 
 	//console.log("jpsurvData");
 	//console.dir(jpsurvData);
-
+	loadHelp();
 	$('#plot-form').hide();
 
 	var status = getUrlParameter('status');
@@ -117,6 +117,9 @@ $( "<div>" )
 
 });
 
+function loadHelp() {
+	$("#help-tab").load("help.html");
+}
 
 function getDownloadOutput(event) {
 
@@ -314,6 +317,23 @@ function get_plot() {
 
 }
 
+function populateAPC(apc) {
+	console.log("Here is the CS_AAPC data");
+	console.dir(apc);
+}
+function populateTabs() {
+	//alert("Populate Tabs");
+	//Let's get the data.
+	var results;
+	$.get('tmp/results-793978.json', function (results) {
+		console.log("Results");
+		console.dir(results);
+		populateAPC(JSON.parse(results.CS_AAPC));
+	});
+
+
+}
+
 function show_apc_table() {
 
 	var params = 'jpsurvData='+JSON.stringify(jpsurvData);
@@ -323,8 +343,15 @@ function show_apc_table() {
 	params = params.replace(/\+/g, "{plus}");
 	//console.log("AFTER: "+params);
 
-	var apc_json = JSON.parse(jpsurvRest('stage2_calculate', params));
+	//var apc_json = JSON.parse(jpsurvRest('stage2_calculate', params));
 	//Check to see if there was a comm error
+	
+	// Get new file called results-xxxx.json
+	// populate images on tab 1.
+
+	console.info("Got here");
+	populateTabs();
+	return true;
 	if(apc_json.status == 'error') {
 		return false;
 	}

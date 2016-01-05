@@ -203,12 +203,13 @@ def stage2_calculate():
     info(BOLD+"**** Calling getFittedResultsWrapper ****"+ENDC)
     # Next two lines execute the R Program
     getFittedResultWrapper = robjects.globalenv['getFittedResultWrapper']
-    rStrVector = getFittedResultWrapper(UPLOAD_DIR, jpsurvDataString)
-    apcDataString = "".join(tuple(rStrVector))
-    info(apcDataString)
-    info(json.dumps(apcDataString))
+    getFittedResultWrapper(UPLOAD_DIR, jpsurvDataString)
+    
+    status = '{"status":"OK"}'
+    mimetype = 'application/json'
+    out_json = json.dumps(status)
+    return current_app.response_class(out_json, mimetype=mimetype)
 
-    return json.dumps(apcDataString)
 
 @app.route('/jpsurvRest/stage3_plot', methods=['GET'])
 def stage3_plot():
