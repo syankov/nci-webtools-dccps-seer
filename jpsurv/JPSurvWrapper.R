@@ -91,12 +91,13 @@ getAllData<- function(filePath,jpsurvDataString)
  
   jpsurvData <<- fromJSON(jpsurvDataString)
   print("Creating json")
-  Model=getJointtModelWrapper(filePath,jpsurvDataString)
+  ModelEstimate=getJointtModelWrapper(filePath,jpsurvDataString)
+  ModelSelection=geALLtModelWrapper(filePath,jpsurvDataString)
   Coefficients=getcoefficientsWrapper(filePath,jpsurvDataString)
   IntGraph=getRelativeSurvivalByIntWrapper(filePath,jpsurvDataString)
   YearGraph=getRelativeSurvivalByYearWrapper(filePath,jpsurvDataString)
   Trends=getTrendWrapper(filePath,jpsurvDataString)
-  jsonl =c(IntGraph,YearGraph,Model,Coefficients,Trends) #returns
+  jsonl =c(IntGraph,YearGraph,ModelEstimate,Coefficients,Trends,"ModelSelection" = ModelSelection) #returns
   exportJson <- toJSON(jsonl)
   print (jsonl)
   print("Creating results file")
@@ -199,13 +200,6 @@ getRelativeSurvivalByIntWrapper <- function (filePath,jpsurvDataString) {
 return (results)
 }
 
-
-
-
-
-
-
-
 # getFullDataDownloadWrapper <- function (filePath, jpsurvDataString) {
 #   #print("R: getDownloadOutputWrapper")
 #   jpsurvData = fromJSON(jpsurvDataString)
@@ -240,8 +234,6 @@ return (results)
 # }
 
 
-
-
 #Gets the coefficients table in the Model Estimates tab
 getcoefficientsWrapper <- function (filePath,jpsurvDataString) {
   jpsurvData=fromJSON(jpsurvDataString)
@@ -268,18 +260,23 @@ geALLtModelWrapper <- function (filePath,jpsurvDataString) {
   # jpind=jpsurvData$calculate$form$jpInd #<-----new
   file=paste(filePath, fileName, sep="/" )
   outputData=readRDS(file)
-  jsonl=c()
+  jsonl=list()
   saved=outputData$fittedResult$FitList
-  
+  joints=list()
+  ModelSelection=list()
   for(i in 1:length(saved)) 
   {
-    "aicJson"=paste(toJSON(saved[[i]]$aic))
-    bicJson=paste(toJSON(saved[[i]]$bic))
-    llJson=paste(toJSON(saved[[i]]$ll))
-    convergedJson=paste(toJSON(saved[[i]]$converged))
-    jsonl =c("aic"=aicJson, "bic"=bicJson, "ll"=llJson, "converged"=convergedJson)
+    name=paste0("joinpoint")
+    aicJson=saved[[i]]$aic
+    bicJson=saved[[i]]$bic
+    llJson=saved[[i]]$ll
+    convergedJson=saved[[i]]$converged
+    joints[[name]]=list("aic"=aicJson, "bic"=bicJson, "ll"=llJson, "converged"=convergedJson)
     
   }
+  ModelSelection=joints
+  jsonl=toJSON(ModelSelection)
+
   return (jsonl)
 }
 
